@@ -34,25 +34,26 @@
 最大熵模型（Maximum Entropy Model）、K-邻近算法（K Nearest Neighbors）以及支持向量机（Support Vector Machines，SVMs）。
 因此学者们开始尝试从其他方面来改进短文本分类算法，比如语义分析（sematic analysis）、半监督（semi-supervised）算法和集中模型（ensemble models）。
 
-纽约大学的Sarah Zelikovitz等人\citing{zelikovitz2005transductive}通过隐含语义索引算法（Latent Semantic Index，LSI）对短文本的语义分析，将文本中的词映射到潜在语义空间，来捕获文本单词之间的相关性，提升分类效果。
+在语义分析方面，纽约大学的Sarah Zelikovitz等人\citing{zelikovitz2005transductive}通过隐含语义索引算法（Latent Semantic Index，LSI）对短文本的语义分析，将文本中的词映射到潜在语义空间，来捕获文本单词之间的相关性，提升分类效果；
 清华大学的Chen等人\citing{chen2011short}通过改进的隐含狄利克雷分布（Latent Dirichlet allocation，LDA）模型，将短文本中的单词与多个粒度的话题相关联，从而拓展短文本特征。
 
-Juan Manuel Cabrera等人\citing{cabrera2013distributional}根据分布式词语表示算法（Distributional Term Representations，DTRs），用半监督的方式统计语料中的文档出现特征以及词语共现信息，形成每个词语的上下文信息，最后强化文本表示，以此来克服短文本处理中长度过短、信息高度分散的难点。
+在半监督学习方面，Juan Manuel Cabrera等人\citing{cabrera2013distributional}根据分布式词语表示算法（Distributional Term Representations，DTRs），用半监督的方式统计语料中的文档出现特征以及词语共现信息，形成每个词语的上下文信息，最后强化文本表示，以此来克服短文本处理中长度过短、信息高度分散的难点。
 
-中国科学院自动化研究所的冯晓等人\citing{feng2013chinese}构造了一种集中学习模型，直接确立短文本实例与某一主题直接的相关性，而不是将短文本表示为权重向量，取得了超过基于向量空间模型（Vector Space Model，VSM）的方法的效果。
+中国科学院自动化研究所的冯晓等人\citing{feng2013chinese}则构造了一种集中学习模型，直接确立短文本实例与某一主题直接的相关性，而不是将短文本表示为权重向量，取得了超过向量空间模型（Vector Space Model，VSM）的效果。
 
 随着神经网络与深度学习逐渐兴起，并在计算机视觉、语音识别等领域取得了不错的成果，
-越来越多的学者开始尝试在自然语言处理问题中引入深度学习模型，以此克服之前方法存在的问题。
-斯坦福大学的Richard Socher等人\citing{socher2012semantic}构造了一个使用矩阵向量的循环神经网络（MV-RNN），来学习长度可变的短语与句子的综合向量表示。
-牛津大学的Nal Kalchbrenner等人\citing{blunsom2014convolutional}提出了动态卷积神经网络（DCNN），利用动态K-max池化的方法，直接获取文本中单词直接的距离关系，避免了对语法分析树的依赖。
+越来越多的学者注意到深度学习模型对于特征提取与数据建模上的优势，开始尝试在在自然语言处理问题中引入。而通过神经网络提取出的文本特征向量，可以直接用于其他任务，例如输入传统分类器进行分类。
+斯坦福大学的Richard Socher等人\citing{socher2012semantic}构造了一个使用矩阵向量的循环神经网络（MV-RNN），从长度不一致的句子中学习语义信息，
+形式长度统一的特征向量，最后放入分类器分类，取得了超过传统文本分类方法的结果；
+牛津大学的Nal Kalchbrenner等人\citing{blunsom2014convolutional}提出了动态卷积神经网络（DCNN），利用动态K-max池化的方法，直接获取文本中单词直接的距离关系，避免了对语法分析树的依赖；
 哈佛大学的Yoon Kim等人\citing{chen2015convolutional}将动态词向量与预训练好的静态词向量相结合作为同一段文本的两个表示，输入卷积神经网络的两个通道中进行分类，也取得的较好的效果。
 
-而对于中文文本的分类，国内学者虽然起步较晚，不过依然有很多不错的成功。
+但是，随着深度学习使用的逐渐扩大，学者们发现，对于语法复杂、需要分词的中文文本，深度学习模型并不能直接应用，也无法取得英文语料一样的优秀效果。因此，国内学者开始探寻适合中文文本的深度学习模型，也获得了很多不错的成果。
 
 中国科学院自动化研究所的来斯惟等人\citing{lai2015recurrent}设计了一个循环卷积神经网络，在中文长文本分类任务中取得了较好的效果。
 纽约大学的张翔等人\citing{zhang2015character}实现了一个字符级别的卷积网络（ConvNets），将中文语句转化为汉语拼音，对中文语料进行分类。
-北京大学的李嫣然等人\citing{li2015component}通过在文本表示中引入部首信息，构造出了一个性能优异的字向量模型，在中文新闻标题分类上获得了明显的效果。
+北京大学的李嫣然等人\citing{li2015component}通过在文本表示中引入部首信息，利用汉字中部首也包含一定语义信息的特点，在连续词袋模型（Continuous Bag-of-Words，CBOW）的基础上，构造出了一个新的字向量模型，在中文新闻标题分类上获得了明显的效果。
 
-近几年，已经有学者将计算机视觉领域中效果显著的Attention机制应用与自然语言处理中的循环神经网络或卷积神经网络
+近几年，自然语言处理领域不断发展，一些新的方法相继出现，2017年，Google公司开创性的提出
 \section{课题主要内容}
 \section{本论文的结构安排}
