@@ -152,8 +152,7 @@ IDF（inverse document frequency）代表逆文档频率，是对一个词可以
 分类器可以分为线性分类器与非线性分类器，下面将对几种常见分类器作简要介绍。
 \subsection{贝叶斯分类器}
 朴素贝叶斯分类器\citing{mccallum1998comparison}是一种典型的线性分类器，并且也是最古老及最简单的分类器之一。
-在自然语言处理领域有着广泛的应用，如垃圾邮件检测，个人邮件排序，文本分类，色情内容检测等。
-朴素贝叶斯理论是该分类器的基本理论，它在分类任务中对输入数据有一个基本假设，即：数据的各特征之间是条件独立的。
+朴素贝叶斯理论是该分类器的基本理论，它在分类任务中对输入数据有一个基本假设：数据的各特征之间是条件独立的。
 虽然这个假设看起来可能明显是错的，但依据朴素贝叶斯理论实现的朴素贝叶斯分类器在结构化或半结构化数据上都有比较理想的表现。
 同时，朴素贝叶斯分类器对CPU和内存的消耗也少于其他分类器。
 
@@ -196,8 +195,8 @@ $P\left ( C \right )$和$P\left ( D \right )$以及$P\left ( D | C\right )$都�
 特征提取方法会在训练时生成庞大的特征词库，使得文本特征向量的维度依然很高，一旦文本长度过短，
 特征向量就会变为稀疏向量，即数据只集中在向量中的某几维上，其他维度都为零。
 文本特征向量的稀疏性一直是短文本分类上最难以解决的问题之一，为了解决这个难题，学者们开始
-尝试引入神经网络与深度学习技术。本小结主要首先介绍基于深度学习的文本表示方法，以及两种
-常见的深度学习网络，最后再介绍一种新兴的文本分类技术。
+尝试引入神经网络与深度学习技术。本小结主要介绍基于深度学习的文本表示方法，以及两种
+常见的深度学习网络。
 
 \subsection{短文本的分布式表示方法}
 短文本的分布式表示方法也称为词向量表示法。
@@ -251,8 +250,7 @@ word2vec工具的缺点也十分明显：
 词向量模型。
 \subsection{卷积神经网络}
 卷积神经网络（Convolutional Neural Network, CNN）\citing{lecun1989backpropagation}是一种前馈神经网络，
-通过模仿猫脑皮层中用于局部感知和方向选择神经元结构，有效降低了普通反馈神经网络的复杂性，
-在图像处理、语音识别等领域有出色表现。
+通过模仿猫脑皮层中用于局部感知和方向选择神经元结构，有效降低了普通反馈神经网络的复杂性。
 
 文本分类任务中，普通的神经网络模型通过构建一个全连接的网络对句子进行处理，
 输入层的神经元直接接收文本的词向量，计算时隐藏层的某些节点就会被输入的特征词激活（例如情感分类中"不"、"喜欢"等具有较强情感倾向的词），
@@ -273,7 +271,7 @@ word2vec工具的缺点也十分明显：
 卷积神经网络由三层网络组成：卷积层、池化层、光栅层，整体结构如图\ref{Text_CNN}所示。
 \begin{figure}[h]
     \includegraphics[scale=0.4]{picture/Text_CNN.png}
-    \caption{卷积神经网络结构图}
+    \caption{卷积神经网络结构}
     \label{Text_CNN}
 \end{figure}
 
@@ -324,4 +322,99 @@ g\left ( x-u,y-v \right )
 输入可能是一个特征向量。因此需要将这些特征图中的数据依次取出，排列成一个向量，
 如网络结构图\ref{Text_CNN}中的光栅化部分所示。
 \subsection{循环神经网络}
-\subsection{注意力机制}
+循环神经网络（Recurrent Neural Network，RNN）也叫做递归神经网络，是深度学习中另一个重要的网络模型。
+RNN的结构如图\ref{RNN}所示，其特点是隐藏层节点不仅接收输入层的数据，还会接收上一个节点的输出数据作为另一个输入源，
+这让RNN可以非常自然的处理序列数据，如文本、语音、视频等。
+\begin{figure}[h]
+    \includegraphics[scale=0.4]{picture/RNN.png}
+    \caption{循环神经网络结构}
+    \label{RNN}
+\end{figure}
+RNN中隐藏层节点包含三个部分，输入参数矩阵$U$、记忆参数矩阵$W$以及输出矩阵$V$，
+对于节点$t$，计算公式如\ref{rnn_hidden_eqn}所示。
+\begin{equation}
+    s_t=f\left ( Ws_{t-1}+Ux_t \right )
+    \label{rnn_hidden_eqn}
+\end{equation}
+其中$s_t$为中间向量，同时送往下一个隐藏层节点$t+1$与输出节点$h_t$，$f$一般为非线性激活函数
+，$s_{t-1}是上一个节点输出的中间向量$。
+输出节点通过公式\ref{rnn_out_eqn}得到输出向量。
+\begin{equation}
+    h_t=\phi\left ( Vs_t \right )
+    \label{rnn_out_eqn}
+\end{equation}
+其中$h_t$是输出向量，$\phi$是输出函数，对于分类任务，一般为$softmax$函数。
+
+RNN模型的优点是对文本这类顺序数据有优秀的建模能力，能够突破n-gram模型中窗口大小的限制，
+提取长间隔的单词之间的特征，
+隐藏层最后一个节点的输出甚至可以包含前面所以单词的特征信息。
+同时模型长度可变，对任意长度的文本都可以直接处理。
+
+RNN模型的缺点也十分明显，就是模型训练十分困难。根据反向传播算法，
+RNN模型训练时会将梯度在隐藏层之间以乘积的形式传播，如果梯度大于$1$，
+则多次相乘会使其指数级上升，引起梯度爆炸（Gradient Exploding）；相反如果小于$1$，都次相乘后梯度逐渐为$0$，
+又引起梯度消失（Gradient Vanishing）。
+
+长短期记忆网络（Long Short Term Memory networks，LSTM）
+\citing{hochreiter1997long}是对传统RNN模型的改进，
+它将每个隐藏层节点看做“记忆细胞”，
+在里面增加一种称为“门”的结构，对输入输出数据加以控制，从而有效解决梯度爆炸与梯度消失的问题。
+
+LSTM的结构如图\ref{LSTM}所示，每个节点包含三个门结构（图中$\sigma $部分），
+分别为遗忘门（Forget Gate）、输入门（Input Gate）与输出门（Output Gate）。
+每个门由一个$Sigmoid$神经网络层和一个相乘操作组成，其中$Sigmoid$层输出$0~1$之间的值，
+表示对应的部分信息是否应该通过，并利用相乘操作作用在输入或输出信息上，$0$值表示不允许信息通过，
+$1$值表示让所有信息通过。
+\begin{figure}[h]
+    \includegraphics[scale=0.5]{picture/LSTM.png}
+    \caption{长短期记忆网络}
+    \label{LSTM}
+\end{figure}
+在一次计算过程中，LSTM节点首先计算遗忘门，公式如\ref{forget_gate_eqn}所示。
+\begin{equation}
+    f_t=\sigma\left ( W_f \cdot [h_{t-1},x_t]+b_f \right )
+    \label{forget_gate_eqn}
+\end{equation}
+
+其中$W_f$与$x_t$是遗忘门中$Sigmoid$层的参数矩阵和偏置矩阵，$f_t$为遗忘向量，
+里面的每一位都对应$C_{t-1}$中的一个数据，用来控制信息的流入。
+
+第二步是将输入数据$x_t$存储到节点中，并更新节点状态。
+这一步首先计算第二个门结构——输入门的$Sigmoid$层与一个tanh层，
+得到两个候选值$i_t$与$\tilde{C}_t$，如公式\ref{input_gate_eqn}与\ref{input_gate_eqn2}所示。
+\begin{equation}
+    i_t=\sigma\left ( W_i \cdot [h_{t-1},x_t]+b_i \right )
+    \label{input_gate_eqn}
+\end{equation}
+\begin{equation}
+    \tilde{C}_t=\tanh\left ( W_C \cdot [h_{t-1},x_t]+b_C \right )
+    \label{input_gate_eqn2}
+\end{equation}
+
+然后根据公式\ref{input_gate_eqn3}得到节点的新状态$C_t$。
+\begin{equation}
+    C_t=f_t \ast C_{t-1} + i_t \ast \tilde{C}_t 
+    \label{input_gate_eqn3}
+\end{equation}
+
+最后，节点通过第三个门结构——输出门，得到输出向量，如公式\ref{output_gate_eqn}所示。
+\begin{equation}
+    \begin{split}
+        o_t&=\sigma\left ( W_o \cdot [h_{t-1},x_t]+b_o \right ) \\
+        h_t &= o_t \ast \tanh\left ( C_t \right )
+    \end{split}
+    \label{output_gate_eqn}
+\end{equation}
+
+通过增加门结构，LSTM有效避免了传统RNN在训练上的问题，但与CNN相比，
+其训练效率依然十分低下，实际使用中常常造成问题。
+因此，本文对短文分类算法的优化，将融合RNN与CNN，结合它们的优点，构建一个
+对于中文短文快速有效的分类模型。
+
+\section{本章小结}
+本章首先对传统的文本表示方法与文本分类算法的基本理论做了简要介绍，
+并指出了传统方法在中文短文本分类上的缺陷与不足。
+接着引出了基于神经网络的短文本分类方法，详细介绍文本的词向量表示法以及
+卷积神经网络和循环神经网络在文本分类任务中的应用。
+这些基础内容为本文的后续工作提供了坚实的理论基础，后续章节将根据这些知识
+搭建一个中文短文本分类模型。
