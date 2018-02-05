@@ -47,6 +47,7 @@
 表示字音。所以只要善加利用，偏旁也能够为词向量的构建提供很多语义特征。
 
 \section{中文文本表示方法}
+\label{word_vec_model}
 中文文本的词向量构建方法一直是中文自然语言处理领域的焦点。
 在研究初期，研究者们尝试直接使用英文词向量工具
 （如\ref{sect_word2vec}中介绍的CBOW模型和Skip-gram模型）
@@ -71,7 +72,7 @@ Yu等人\citing{yu2017joint}在CWE模型中结合“部首-汉字”与“汉字
 
 \section{部首信息增强的中文词向量构建方法}
 根据上一小节中介绍的其他学者在中文词向量模型上的种种成果以及汉字中偏旁部首的特性，
-本文设计了一种新的中文词向量模型——部首信息增强的中文词向量模型（Radical Enhanced Chinese Word Embedding Model，RECWE）。
+本文设计了一种新的中文词向量模型——部首信息增强的中文词向量模型（Radical Enhanced Chinese Word Embedding，RECWE）。
 RECWE以word2vec工具的CBOW模型为基础，在模型的预测层中增加一个代表“偏旁部首-汉字”信息的隐藏层，
 增强每个词的语义信息。同时，RECWE将输入文本从简体转换为繁体，并对每个字的部首进行语义转换，
 最大程度上丰富输入词语的语义信息。
@@ -226,9 +227,9 @@ RECWE模型的训练算法采用CBOW模型实现的负采样（Negative Sampling
 %可以添加负采样的介绍
 
 \section{部首信息增强的中文字向量构建方法}
-\subsection{中文字向量概述}
-中文分词技术虽然已相对成熟，但准确率任然达不到100\%，分词结果依然存在一定的错误。
-对于本文主要研究的中文短文本，由于其大多来自与用户在互联网的互动，如腾讯空间说说、新浪微博、
+%\subsection{中文字向量概述}
+中文分词技术虽然已相对成熟，但准确率仍然达不到100\%，分词结果依然存在一定的错误。
+特别是对于本文主要研究的中文短文本，由于其大多来自于用户在互联网中的互动，如腾讯空间说说、新浪微博、
 淘宝商品评价等，相比于长文本具有很强的随意性，充斥着大量的口语化表达方式，
 有些句子甚至存在语病，这更进一步增加了分词的难度，使得分词结果很不理想。
 而错误的分词结果会极大影响后续的词向量模型，降低词向量的质量。
@@ -240,9 +241,168 @@ RECWE模型的训练算法采用CBOW模型实现的负采样（Negative Sampling
 将文本表示为连续的向量，从而绕过分词的步骤，然后通过循环神经网络等深度学习技术直接从
 字向量中学习文本特征，取得了不错的成果。但这些方法得到字向量类似于One-hot向量，
 没有反应出每个字直接语义上的联系，忽略了大量的语义信息。
-因此，作为RECWE词向量模型的补充，本文设计了一个能够利用汉字部首信息的字向量模型，
-为后续的分类模型提供更多的文本信息，克服分词错误带来的影响，最终提升分类准确率。
+因此，作为RECWE词向量模型的补充，本文设计了一个能够利用汉字部首信息的字向量模型——部首信息增强的中文字向量模型（Radical Enhanced Chinese Character Embedding，RECCE），
+为后续的分类模型提供更多的文本信息。
 
+%\subsection{部首信息增强的中文字向量模型}
+RECCE模型是上节中介绍的RECWE模型的一个变形，它替换了输入层的词向量，
+将模型的主要训练对象转换为字向量，网络结构图如图\ref{RECCE}所示，
+其中$c_i$表示当前需要预测的目标字，其他符号与图\ref{RECWE}相同。
+\begin{figure}
+    \includegraphics[scale=0.4]{picture/RECCE.png}
+    \caption{RECCW模型结构}
+    \label{RECCE}
+\end{figure}
 
-\subsection{部首信息增强的中文字向量模型}
+通过RECCE模型将汉字映射到连续的向量空间，克服了One-hot类型的字向量的种种问题，
+同时由于添加了偏旁部首的语义信息，
+具有相同语义的字向量能够在空间上彼此靠近（如“病”、“疤”、“癌”等字）
+，增强了字向量对于文本的表现力。
+并且对于某些非常短小的文本，如新闻标题、微信聊天记录等，
+使用词向量进行表示得到的数据长度往往不超过10，还可能存在分词错误，不利于后续分类模型的特征提取工作。
+使用字向量则一定程度上丰富了文本的信息量，让分类模型能够获取到更多的特征，
+避免分词错误带来的影响，提升分类准确率。
+
 \section{实验及其结果分析}
+为了验证算法获得的词向量与字向量的可行性与有效性，本节将根据来源于“今日头条”新闻网的83万条新闻标题进行实验。
+实验实现前面介绍的RECWE模型与RECCE模型，同时实现了\ref{word_vec_model}小节中提到的word2vec工具、
+CWE模型\citing{chen2015joint}、
+SCWE模型\citing{xu2016improve}、
+JWE模型\citing{yu2017joint}与\ref{research_status}小节中提到的charCBOW模型\citing{li2015component}用于对比实验。
+词向量、字向量的有很多种评价方法，本实验主要使用词相似度（Word Similarity）与词类比（Word Analogy）方法
+来评价不同模型训练出的词向量，使用字相似度（Character Similarity）方法来评价不同模型训练出的字向量。
+\subsection{部首信息增强的中文词向量模型实验对比}
+训练语料使用RECWE模型使用的Ansj工具分词，哈工大以及百度停用词表过滤掉新闻中的停用词，
+所有词向量模型采用统一的训练参数，具体如表\ref{word_vec_arg_form}所示。
+\begin{table}[h]
+    \caption{词向量训练参数表}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        参数名 & 参数意义 & 参数值 \\
+        \hline
+        size & 词向量纬度 & 200 \\
+        \hline
+        alpha & 学习速率 & 0.025 \\
+        \hline
+        mincount & 语料中低频词的出现词频 & 5 \\
+        \hline
+        sample & 高频词汇的随机降采样的配置阈值 & 1e-4 \\
+        \hline
+        workers & 训练的并行数 & 4 \\
+        \hline
+        iter & 迭代次数 & 5 \\
+        \hline
+        window & 当前词与预测词的最大距离 & 5 \\
+        \hline
+    \end{tabular}
+    \label{word_vec_arg_form}
+    \end{table}
+
+（1）词相似度
+
+词相似度主要用来评估词向量判断语义相近的单词对的能力\citing{yu2017joint}。
+本实验选择了文献\cite{chen2015joint}提供的两个不同的相似词数据库wordsim-240和wrodsim-296，
+它们分别包含240个中文单词对与296个中文单词对，每个单词对都包含一个人工标注的相似度。
+wordsim-240主要针对语义上有联系的单词，wordsim-296则针对同义词，
+部分数据如表\ref{wordsim-240_form}与表\ref{wordsim-296_form}所示。
+
+\begin{table}[h]
+    \caption{wordsim-240数据节选}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        单词1 & 单词2 & 相似度 \\
+        \hline
+        李白 & 诗 & 9.2 \\
+        \hline
+        浏览器 & 网页 & 8.95 \\
+        \hline
+        医生 & 职责 & 8.85 \\
+        \hline
+        白天 & 晚上 & 8.8 \\
+        \hline
+        学生 & 学校 & 8.71 \\
+        \hline
+        法官 & 法律 & 8.65 \\
+        \hline
+        员工 & 公司 & 8.65 \\
+        \hline
+        ... & ... & ... \\
+        \hline
+        教授 & 黄瓜 & 0.5 \\
+        \hline
+        鸟 & 自行车 & 0.5 \\
+        \hline
+        蛋白质 & 文物 & 0.15 \\
+        \hline
+    \end{tabular}
+    \label{wordsim-240_form}
+    \end{table}
+
+\begin{table}[h]
+\caption{wordsim-296数据节选}
+\begin{tabular}{|c|c|c|}
+    \hline
+    单词1 & 单词2 & 相似度 \\
+    \hline
+    足球 & 足球 & 4.98 \\
+    \hline
+    老虎 & 老虎 & 4.8888888889 \\
+    \hline
+    恒星 & 恒星 & 4.7222222222 \\
+    \hline
+    入场券 & 门票 & 4.5962962963 \\
+    \hline
+    钱 & 现金 & 4.58 \\
+    \hline
+    银行 & 钱 & 4.292 \\
+    \hline
+    手机 & 电话 & 4.2814814815 \\
+    \hline
+    ... & ... & ... \\
+    \hline
+    签名 & 暂停 & 0.304 \\
+    \hline
+    股票 & 美洲豹 & 0.304 \\
+    \hline
+    延迟 & 种族主义 & 0.262962963 \\
+    \hline
+\end{tabular}
+\label{wordsim-296_form}
+\end{table}
+
+对于每个词向量模型，单词对的相似度通过这两个单词相应的词向量的余弦距离来表示。
+实验最后依靠计算词向量得到的相似度与相似词数据库中人工标注的相似度之间的spearman相关系数（Spearman Correlation）\citing{mikolov2013distributed}
+判断词向量的好坏，spearman相关系数越高，代表该词向量越能体现单词之间的相关性。
+具体的实验结果如表\ref{word_vec_result}所示。
+\begin{table}[ht]
+    \caption{词向量评估结果}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        模型 & wordsim-240 & wordsim-296 \\
+        \hline
+        word2vec & 0.4221 & 0.4479 \\
+        \hline
+        CWE & 0.43635 & 0.4750 \\
+        \hline
+        SCWE & 0.4311 & 0.4648 \\
+        \hline
+        JWE & 0.4467 & 0.5831 \\
+        \hline
+        RECWE & 0.4962 & 0.5849 \\
+        \hline
+    \end{tabular}
+    \label{word_vec_result}
+    \end{table}
+
+从结果中可以看出，在两个相似词库上，RECWE模型的表现都优于其他模型。
+CWE模型和SCWE模型相比word2vec结果有所提升，但由于只利用了单词中的汉字信息，
+所以相较于添加了部首信息的JWE模型与RECWE模型结果要差。还可以看到，在wordsim-240数据库
+上，RECWE模型与JWE模型相比有较大提升。
+这主要是因为该数据库中包含的大多是语义上有一定从属关系的单词对，而拥有部首转义机制的
+RECWE模型能够很好的找到这样的关系。比如单词对“淋浴”与“水”，RECWE模型会在预处理阶段把
+“淋”字和“浴”字的偏旁“氵”转义为“水”，然后在模型训练阶段就可以发现“淋浴”与“水”之间的内在联系。
+
+（2）词类比
+
+词类比是用来衡量词向量是否能够反应单词对之间的语言规律的一种技术\citing{mikolov2013linguistic}。
+举例来说，给定单词关系组“北京-中国:东京-日本”，
