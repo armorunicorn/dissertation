@@ -251,6 +251,7 @@ word2vec工具的缺点也十分明显：
 因此本文在原始CBOW模型之上，增加中文的字和部首信息，致力于实现一个适用于中文的
 词向量模型。
 \subsection{卷积神经网络}
+\label{cnn_section}
 卷积神经网络（Convolutional Neural Network, CNN）\citing{lecun1989backpropagation}是一种前馈神经网络，
 通过模仿猫脑皮层中用于局部感知和方向选择神经元结构，有效降低了普通反馈神经网络的复杂性。
 
@@ -324,6 +325,7 @@ g\left ( x-u,y-v \right )
 输入可能是一个特征向量。因此需要将这些特征图中的数据依次取出，排列成一个向量，
 如网络结构图\ref{Text_CNN}中的光栅化部分所示。
 \subsection{循环神经网络}
+\label{rnn_section}
 循环神经网络（Recurrent Neural Network，RNN）也叫做递归神经网络，是深度学习中另一个重要的网络模型。
 RNN的结构如图\ref{RNN}所示，其特点是隐藏层节点不仅接收输入层的数据，还会接收上一个节点的输出数据作为另一个输入源，
 这让RNN可以非常自然的处理序列数据，如文本、语音、视频等。
