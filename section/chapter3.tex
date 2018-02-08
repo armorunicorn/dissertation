@@ -352,12 +352,6 @@ wordsim-240主要针对语义上有联系的单词，wordsim-296则针对同义�
     \hline
     入场券 & 门票 & 4.5962962963 \\
     \hline
-    钱 & 现金 & 4.58 \\
-    \hline
-    银行 & 钱 & 4.292 \\
-    \hline
-    手机 & 电话 & 4.2814814815 \\
-    \hline
     ... & ... & ... \\
     \hline
     签名 & 暂停 & 0.304 \\
@@ -404,5 +398,127 @@ RECWE模型能够很好的找到这样的关系。比如单词对“淋浴”与
 
 （2）词类比
 
-词类比是用来衡量词向量是否能够反应单词对之间的语言规律的一种技术\citing{mikolov2013linguistic}。
-举例来说，给定单词关系组“北京-中国:东京-日本”，
+词类比是另一种衡量词向量好坏的技术，它主要判断词向量是否能够体现出单词对之间的语言规律\citing{mikolov2013linguistic}。
+举例来说，给定单词关系组“北京-中国:东京-日本”，一个好的词向量就应该让单词“日本”的词向量$vec\left(\mbox{日本}\right)$
+接近式子“$vec\left(\mbox{中国}\right)$-$vec\left(\mbox{北京}\right)$+$vec\left(\mbox{东京}\right)$”产生的向量。
+也就是说，给定一个类比关系“$a$-$b$:$c$-$d$”，如果词向量能够通过公式\ref{word_analogy_eqn}在词表中寻找向量$x$来
+使关系“$a$-$b$:$c$-$x$”成立，那么就判定这个词向量包含这个类比关系。
+\begin{equation}
+    \arg \max_{x\neq a,x\neq b,x\neq c}\cos \left ( \vec{b}-\vec{a}+\vec{c},\vec{x} \right )
+    \label{word_analogy_eqn}
+\end{equation}
+
+本次实验使用文献\cite{chen2015joint}提供的中文词类比数据库，
+包含了1124组词类比关系，每组类比关系包含4个单词，所有类比关系分为三个类别：
+“首都”（677组）、“省会”（175组）、“人员”（272组）。具体数据如表\ref{word_analogy_table}所示。
+\begin{table}[ht]
+    \caption{词类比数据库（部分）}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        类别 & 单词对1 & 单词对2 \\
+        \hline
+        首都 & 曼谷-泰国 & 北京-中国 \\
+        \hline
+        首都 & 东京-日本 & 柏林-德国 \\
+        \hline
+        首都 & 伦敦-英国 & 开罗-埃及 \\
+        \hline
+        省会 & 长春-吉林 & 哈尔滨-黑龙江 \\
+        \hline
+        省会 & 南昌-江西 & 南京-江苏 \\
+        \hline
+        省会 & 广州-广东 & 成都-四川 \\
+        \hline
+        人员 & 爸爸-妈妈 & 兄弟-姐妹 \\
+        \hline
+        人员 & 国王-王后 &  父亲-母亲\\
+        \hline
+        人员 & 爷爷-奶奶 & 叔叔-阿姨 \\
+        \hline
+    \end{tabular}
+    \label{word_analogy_table}
+    \end{table}
+
+实验用准确率作为结果指标，准确率越高，表明词向量包含的词类比关系越多，
+三类词类比的实验结果如表\ref{word_analogy_resutl}所示，
+总体结果见图\ref{word_analogy_all_resutl}所示。
+\begin{table}[ht]
+    \caption{各类类比关系实验结果}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        词向量模型 & 首都 & 省会 & 人员 \\
+        \hline
+        word2vec & 0.11816 & 0.11428 & 0.34558 \\
+        \hline
+        CWE & 0.20787 & 0.14285 & 0.32720 \\
+        \hline
+        SCWE & 0.21381 & 0.14022 & 0.33021 \\
+        \hline
+        JWE & 0.22101 & 0.16 & 0.32352 \\
+        \hline
+        RECWE & 0.23632 & 0.18285 & 0.38603 \\
+        \hline
+    \end{tabular}
+    \label{word_analogy_resutl}
+    \end{table}
+
+\begin{figure}
+    \includegraphics[scale=0.5]{picture/word_analogy_result.pdf}
+    \caption{词类比整体实验结果}
+    \label{word_analogy_all_resutl}
+\end{figure}
+
+从这两个结果中可以看出，同其他词向量模型相比，RECWE模型在三类类比关系上都取得了
+最优的结果，表明部首信息能够增强模型在语言规律上的表现力。特别在“人员”类上，
+部首转义机制让RECWE模型能够相对容易的根据
+部首发现词对之间的关系，如通过部首“女”联系“妈妈”、“姐姐”等词，所以结果中相对JWE模型准确率有较大提升。而对于“首都”这类包含大量音译词的类别，
+其内部部首不能提供额外语义，则提升较小。
+
+\subsection{部首信息增强的中文字向量模型实验对比}
+本实验通过字相似度技术比较不同模型训练得到的词向量，
+使用的字相似度数据库类似上一个小节中使用的词相似度数据库，
+描述了400个常见字的关联关系，部分数据如表\ref{charsim_form}所示。
+\begin{table}[h]
+    \caption{字相似度数据库（部分）}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        汉字1 & 汉字2 & 相似度 \\
+        \hline
+        犬 & 狗 & 11.425 \\
+        \hline
+        癌 & 病 & 10.525 \\
+        \hline
+        七 & 列 & 0.5 \\
+        \hline
+        车 & 鸟 & 0.427 \\
+        \hline
+    \end{tabular}
+    \label{charsim_form}
+    \end{table}
+字向量模型的训练参数与上一小结中的训练参数相同，实验结果见表\ref{char_vec_result}所示。
+\begin{table}[ht]
+    \caption{字向量评估结果}
+    \begin{tabular}{|c|c|}
+        \hline
+        模型 &  spearman相关系数\\
+        \hline
+        word2vec & 0.47693 \\
+        \hline
+        charCBOW & 0.48852 \\
+        \hline
+        JWE & 0.56075 \\
+        \hline
+        RECCE & 0.59409 \\
+        \hline
+    \end{tabular}
+    \label{char_vec_result}
+    \end{table}
+
+可以看到，RECCE模型训练的字向量总体上有了一个较优秀的结果，表明添加部首的语义信息对于
+字向量的训练同样有效。
+\section{本章小结}
+本章节主要介绍中文短文本的表示方法，首先分析了汉字的演变以及汉字部首对于汉字语义的贡献，
+接着总结了近几年相关学者在中文文本表示上的一些研究，然后在此基础上提出了两种新的
+文本表示模型——部首信息增强的词向量模型与部首信息增强的字向量模型，最后设计实验
+与其他模型进行对比，实验结果表明模型能够有效提升词向量与字向量的质量，为后续
+分类模型提供充实的基础。
