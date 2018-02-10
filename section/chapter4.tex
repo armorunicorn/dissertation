@@ -7,6 +7,7 @@
 ，优化神经网络提取出的文本特征向量，防止特征向量信息冗余或信息缺失，
 增强模型在中文短文本上的分类效果。
 \section{卷积循环神经特征提取网络}
+\label{CLSTM_section}
 根据\ref{cnn_section}小节与\ref{rnn_section}小节的介绍，我们知道
 卷积神经网络和循环神经网络在特征提取方面都有优秀的表现，各有其优缺点。一方面，卷积神经网络
 能够从序列数据（如文本数据）和空间数据（如图片数据）之中快速的学习本地特征，得到分类结果，
@@ -73,19 +74,147 @@ Bi-LSTM网络的整体流程如图\ref{Bi-LSTM}所示，对于从上层网络传
 \section{Attention Model}
 Attention Model（注意力机制）是近几年兴起的一个新型模型，在很多场景被证明有效。
 模型以认知心理学中的人脑注意力理论为核心，认为人脑在处理具体任务时，对于相关事物的注意力会集中在
-某一个特定的地方，忽略其他无关的地方，而不是对每个地点分配相同的注意力。通过这样的理论，Attention Model
-能够合理的分配模型的计算资源，并且还可以避免非关键数据对结果的影响。Attention Model最先在计算机视觉领域被
+某一个特定的地方，忽略其他无关的地方，而不是对每个地点分配相同的注意力。
+通过这样的理论，Attention Model
+能够合理的分配模型的计算资源，并且还可以避免非关键数据对结果的影响。
+Attention Model最先在计算机视觉领域被
 应用于图片识别等问题，取得了很好的成果，随后在自然语言处理领域也获得了优秀的成绩。
-下面将以编码-解码模型中的Attention机制为例子，
-说明Attention Model的基本知识，然后把Attention Model应用在卷积循环
+下面将以编码-解码模型中的Attention机制为例，
+说明Attention Model的基本知识，然后在下一小节把Attention Model应用在卷积循环
 神经网络当中。
 
-编码-解码模型是自然语言处理领域中一个非常普遍的模型，它通过将输入文本编码为中间
-向量，在把中间向量解码成输出向量，能够实现多种任务，如机器翻译、文本复述等。
+编码-解码模型是自然语言处理领域中一个非常普遍的模型，它通过编码器将输入向量编码为中间
+变量，再用解码器解码成输出向量，完成输入数据到另一组输出数据的转变，
+从而实现多种内容转换任务，如机器翻译、文本复述等。
+同时编码-解码模型的编码器与解码器没有具体限定，可以使用
+各种各样的深度学习模型，如CNN、RNN等，让模型具有很强的泛用性，能够适合各种应用场景。
+编码-解码模型的一般架构如图\ref{Encoder}所示。
+\begin{figure}[h]
+    \includegraphics[scale=0.5]{picture/Encoder.png}
+    \caption{编码-解码模型架构图}
+    \label{Encoder}
+\end{figure}
 
+编码-解码模型的输入一般是一个长度为$n$向量序列$X$（$X= \left \{x_1,x_2,x_3,...,x_n \right \}$）,
+输出则是一个长度为$m$的向量序列$Y$（$Y= \left \{y_1,y_2,y_3,...,y_m \right \}$）。
+模型运行时，编码器根据一定的映射规则对输入序列进行编码，得到中间编码$C$，表达公式如\ref{encode_eqn}所示。
+\begin{equation}
+    C=Encode\left ( x_1,x_2,x_3,...x_n \right )
+    \label{encode_eqn}
+\end{equation}
+之后解码器对中间编码$C$进行解码，得到输出序列$Y$，计算公式如\ref{decode_eqn}所示。
+\begin{equation}
+    y_i=Decode\left ( C,y_1,y_2,y_3,...,y_{i-1} \right ),i=1,2,3,...,m
+    \label{decode_eqn}
+\end{equation}
 
+可以看出解码器在计算输出序列$Y$时，对于每一个输出子项$y_i$用到的数据信息是一样的，都是
+输入序列$X$编码后得到的中间编码$C$，
+即输入序列$X$对输出序列$Y$中每一个子项的影响是相同的。这样的方式无疑忽略了
+很多细节，在一些任务中甚至直接影响了输出结果。比如机器翻译任务，
+一个词的翻译虽然与上下文和词本身同时有关，但对于人名机构名等名词，
+翻译时词本身的影响必定较重，而其他的动词形容词等则可能上下文的影响较大，所以简单
+输入序列同比例的作用在输出序列之上并不是一个好的方法。
 
+Attention Model的出现很好的解决了这个问题，在Attention-Based编码-解码模型中，
+编码器的输出不再是一个完整的中间编码$C$，而是输入序列$X$在编码阶段的历史状态$C_i$，
+如公式\ref{attention_encode_eqn}所示。
+\begin{equation}
+    C_i=\sum_{j=1}^{n}\alpha_{ij}Encode\left ( x_j \right )
+    \label{attention_encode_eqn}
+\end{equation}
+其中$\alpha_{ij}$表示当前输入子项$x_j$的注意力权重，这个值越高，表明$x_j$对结果
+越重要。
+
+解码器根据历史状态$C_i$得到优化后的输出序列，如公式\ref{attention_decode_eqn}所示。
+\begin{equation}
+    y_i=Decode\left ( C_i,y_1,y_2,y_3,...y_{i-1} \right ),i=1,2,3,...,m
+    \label{attention_decode_eqn}
+\end{equation}
+
+可以发现，Attention Model本质上既是在模型的输出结果上添加一个注意力权重，
+筛选对结果重要的数据项，同时过滤对结果影响较低的数据项，以此优化模型的输出效果。
+这一思想在短文本分类任务中同样适用，因为对于短文本文本分类任务，确定分类结果的
+往往是文本的几个关键词，如情感分析中的“喜欢”、“讨厌”等词，如果能够判断出这些关键词，
+就可以极大的增强分类模型的结果。
 
 \section{Attention-Based字词结合卷积循环中文短文本分类网络}
+\subsection{Attention-Based卷积循环特征提取网络}
+根据Attention Model的思想，
+本文改进了\ref{CLSTM_section}小节提出的卷积循环特征提取网络，
+增加注意力权重，优化原始网络产生的特征向量。
+
+Attention Model的核心在于注意力权重的获取，有多种实现方式，如Soft Attention、
+Hard Attention等\citing{xu2015show}。为了减少模型的计算负担，
+本文选择参数化的Soft Attention实现方式，该实现方式能够让整个Attention层直接嵌入
+模型，使梯度可以经过Attention Mechanism模块，反向传播到其他地方，以此简化模型的训练过程。
+总体计算流程如图\ref{Soft_Attention}所示，
+首先把双层LSTM的输出$h$（$h=\left \{ h_1,h_2,..,h_n\right\}$）
+送入一个单层全连接神经网络，根据\ref{attention_eqn1}公式将其转换为中间向量$u$，
+作为原始输出$h$的隐藏表示。
+\begin{equation}
+    u_i=\tanh\left ( W_wh_i+b_w \right )
+    \label{attention_eqn1}
+\end{equation}
+
+然后通过softmax函数计算中间向量$u$与文本上下文向量$u_w$的相似度$\alpha$，如公式\ref{attention_eqn2}所示。
+\begin{equation}
+    \alpha_i=\frac{\exp\left ( u_{i}^{\top }u_w \right )}{\sum_n\exp\left ( u_{i}^{\top }u_w \right )}
+    \label{attention_eqn2}
+\end{equation}
+
+其中$u_w$是记忆向量，可以视为筛选重要特征的高层抽象参数，代表着
+整个语料库的上下文信息\citing{sukhbaatar2015end}，在模型初始阶段随机初始化，
+并在训练时同其他参数一起调整。计算结果$\alpha$则是标准化的注意力权重，用于下一步计算。
+
+最后，把原始向量$h$和$\alpha$加权相加，就得到Attention优化后的特征向量$S$，如公式\ref{attention_eqn3}所示。
+\begin{equation}
+    S_i=\sum_n\alpha_ih_i
+    \label{attention_eqn3}
+\end{equation}
+\begin{figure}[h]
+    \includegraphics[scale=0.5]{picture/Attention.png}
+    \caption{Soft Attention计算流程}
+    \label{Soft_Attention}
+\end{figure}
+
+\subsection{双通道字词结合短文本分类模型}
+在短文本分类任务中，词向量与字向量都能够作为文本的向量表示，但都有其固有的缺点：
+词向量极度依赖分词结果，错误的分词会极大的影响词向量的性能；字向量虽然不存在分词的问题，但有些词语和
+内部的汉字意思可能南辕北辙，如“东西”与其内部的汉字“东”和“西”，单纯从字向量很难推测出词的含义。
+为了解决这个问题，本文设计了双通道字词结合短文本分类模型，同时接受短文本的词向量表示与字向量表示，
+充分结合两者的特征信息，克服了常规分类模型的不足。
+
+\begin{figure}[h]
+    \includegraphics[scale=0.4]{picture/classifier.png}
+    \caption{双通道字词结合短文本分类模型}
+    \label{classifier}
+\end{figure}
+
+双通道字词结合短文本分类模型主要是构建一个包含两个平行的特征提取网络的分类模型，分别提取词向量特征与字向量特征，
+总体结构如图\ref{classifier}所示。
+
+模型总共分为三层：编码层、特征提取层与全连接层。编码层根据相应的词向量与字向量模型，将输入文本解析为词向量序列$W$
+和字向量序列$C$。特征提取层分为两个平行的神经网络模块，由前文中的Attention-Based卷积循环特征提取网络组成，
+分别提取词向量序列和字向量序列的文本特征，即向量$S_w$、$S_c$，然后根据公式\ref{classifier_eqn}将其合并，得到最终的文本特征向量$S$。
+\begin{equation}
+    S =\left [ S_w\bigoplus S_c \right ]
+    \label{classifier_eqn}
+\end{equation}
+
+全连接层由线性转换层和Softmax层组成，其中线性转换层将特征向量$S$转换为一个维度与分类类别相当的实值向量，然后
+Softmax层将这些实值映射为最终的条件概率，计算公式如\ref{softmax_eqn}所示。
+\begin{equation}
+    P=softmax\left ( W_sS+b_s \right )
+    \label{softmax_eqn}
+\end{equation}
+
+对于模型训练，本文使用公式\ref{cost_function}作为模型的损失函数，来最小化模型的分类误差。其中$N_t$表示训练语料库大小，
+$N_c$表示类别数量，$P_{j}^{g}\left ( s_i \right )$表示当前文本的真实类别为$j$的概率，属于类别$j$则为1，否则为0。
+并且使用随机梯度下降算法（Stochastic Gradient Descent，SGD）作为训练的优化算法。
+\begin{equation}
+    Loss=-\sum_{i=1}^{N_t}\sum_{j=1}^{N_c}P_{j}^{g}\left ( s_i \right )\cdot\log\left ( P_j\left ( s_i \right ) \right )
+    \label{cost_function}
+\end{equation}
 \section{实验结果和分析}
 \section{本章小结}
