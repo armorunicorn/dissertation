@@ -140,6 +140,7 @@ Attention Model的出现很好的解决了这个问题，在Attention-Based编�
 
 \section{Attention-Based字词结合卷积循环中文短文本分类网络}
 \subsection{Attention-Based卷积循环特征提取网络}
+\label{ACLSTM_section}
 根据Attention Model的思想，
 本文改进了\ref{CLSTM_section}小节提出的卷积循环特征提取网络，
 增加注意力权重，优化原始网络产生的特征向量。
@@ -209,12 +210,206 @@ Softmax层将这些实值映射为最终的条件概率，计算公式如\ref{so
     \label{softmax_eqn}
 \end{equation}
 
-对于模型训练，本文使用公式\ref{cost_function}作为模型的损失函数，来最小化模型的分类误差。其中$N_t$表示训练语料库大小，
+本文使用公式\ref{cost_function}作为模型的损失函数，来最小化模型的分类误差。其中$N_t$表示训练语料库大小，
 $N_c$表示类别数量，$P_{j}^{g}\left ( s_i \right )$表示当前文本的真实类别为$j$的概率，属于类别$j$则为1，否则为0。
-并且使用随机梯度下降算法（Stochastic Gradient Descent，SGD）作为训练的优化算法。
+%并且使用随机梯度下降算法（Stochastic Gradient Descent，SGD）作为训练的优化算法。
 \begin{equation}
     Loss=-\sum_{i=1}^{N_t}\sum_{j=1}^{N_c}P_{j}^{g}\left ( s_i \right )\cdot\log\left ( P_j\left ( s_i \right ) \right )
     \label{cost_function}
 \end{equation}
-\section{实验结果和分析}
+\section{实验设计和结果分析}
+为了验证Attention-Based字词结合卷积循环中文短文本分类网络模型的可行性及有效性，本文
+设计并实现了字向量/词向量两类总计8组对比实验模型，对新闻标题数据进行分类，并对结果进行分析。
+\subsection{实验语料数据}
+本实验所用的短文本数据由两部分组成，一部分来自“今日头条”网站，
+另一部分为清华大学THUCTC新闻语料\citing{li2007scalable}。
+语料库总计包含830396条新闻标题数据，共分为财经、科技、体育等12个类别（具体信息如表\ref{train_data_table}所示），
+长度都在60字以内。
+实验随机抽取80\%数据作为模型训练数据集，另外20\%则为验证集。
+\begin{table}[h]
+    \caption{实验语料库分类详情}
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        类别 & 数量 & 类别 & 数量 \\
+        \hline
+        社会 & 57860 & 体育 & 134680 \\
+        \hline
+        时政 & 62658 & 股票 & 149853 \\
+        \hline
+        教育 & 41827 & 娱乐 & 92886 \\
+        \hline
+        财经 & 41085 & 家居 & 32188 \\
+        \hline
+        游戏 & 24313 & 房产 & 18440 \\
+        \hline
+        时尚 & 13150 & 科技 & 161456 \\
+        \hline
+    \end{tabular}
+    \label{train_data_table}
+    \end{table}
+
+\subsection{实验环境及相关工具}
+本实验模型采用机器学习库Tensorflow作为分类模型的实现工具。Tensorflow是
+Google公司与2015年11月9日发布并宣布开源的机器学习框架，是现在最流行的深度学习项目之一。
+Tensorflow支持Linux平台、Windows平台、Mac平台等多种主流平台，提供了非常丰富的
+深度学习相关API，包括基本的向量矩阵计算、各种优化算法、
+各种卷积神经网络和循环神经网络基本单元的实现、
+以及可视化的辅助工具等等。
+Tensorflow将所有用户输入的计算结构都视为数据流图（data flow graphs），图中的
+节点（nodes）表示数学操作，连接节点的线表示在节点间相互输送数据的多维数据数组，
+即张量（tensor）。
+Tensorflow可以适应任何硬件环境，无论台式机、服务器、手机移动设备都可以
+直接运行计算代码，并且拥有自动求微分功能，在模型训练时自动计算相关的微分导数，极大的简化了
+深度学习代码的开发。
+
+本实验使用英伟达GeForce显卡作为模型训练的辅助工具。
+通过英伟达推出的CUDA技术（Compute Unified Device Architecture，统一计算架构），
+使用GeForce显卡能够在在GPUs（GPGPU）上使用图形APIs进行传统通用计算，从而加速模型训练。
+
+本实验具体的实验环境如表\ref{train_env_table}所示：
+\begin{table}[h]
+    \caption{实验环境具体配置}
+    \begin{tabular}{|c|c|}
+        \hline
+        操作系统 & Ubuntu 16.04 \\
+        \hline
+        开发语言 & Python 3.6 \\
+        \hline
+        开发平台 & Google Tensorflow深度学习框架 \\
+        \hline
+        CPU & Intel I5 \\
+        \hline
+        内存 & 8G \\
+        \hline
+        硬盘 & 1T \\
+        \hline
+        显卡 & NVIDIA GeForce 1080 \\
+        \hline
+    \end{tabular}
+    \label{train_env_table}
+\end{table}
+\subsection{分类模型评价方法}
+分类模型的有效性有多种评价方法，如准确率（Precision）、
+召回率（Recall）和F1-Measure。对于分类模型的分类结果，总体可以分为4中情况，如表\ref{classification_demo_table}所示。
+\begin{table}[h]
+    \caption{分类结果示例表}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        & 实际属于该类 & 实际不属于该类 \\
+        \hline
+        被分到该类 & TP & FP \\
+        \hline
+        未被分到该类 & FN & TN \\
+        \hline
+    \end{tabular}
+    \label{classification_demo_table}
+\end{table}
+其中TP表示实际属于该类且被模型分到该类的样例数。FP表示实际不属于该类，但被
+模型分到该类的样例数。FN表示实际属于该类，但未被分到该类的样例数。TN表示实际不属于该类，
+且未被分到该类的样例数。
+
+根据表\ref{classification_demo_table}，准确率计算公式可写为式\ref{accuracy}。
+\begin{equation}
+    Accuracy=\frac{TP+TN}{TP+FP}
+    \label{accuracy}
+\end{equation}
+召回率可定义为式\ref{recall}。
+\begin{equation}
+    Recall=\frac{TP+TN}{TP+FN}
+    \label{recall}
+\end{equation}
+准确率反映了模型分类结果的正确率，召回率反映了模型找到正确列表的能力，两者都可以
+体现分类模型有效性，但很多时候会相互矛盾。为了正确评价本实验中实现的所有模型，本文使用
+这两个的加权调和平均值作为评价标准，即F1-Measure，计算公式如\ref{f1-measure}所示。
+\begin{equation}
+    F1-Measure=\frac{2\times Precision \times Recall}{Precision+Recall}
+    \label{f1-measure}
+\end{equation}
+\subsection{对比实验设计}
+为了验证本文设计的模型对于短文本分类的效果，本实验设计了4组对比实验，每组又词向量分类模型与
+字向量分类模型两种，总计8个对比实验：
+
+（1）传统LSTM模型
+
+模型结构与实现方式由文献\cite{zhou2016compositional}提供，
+词向量版本使用Ansj中文分词开源库以及word2vec工具将训练语料映射为200维的词向量文本数据，
+字向量版本使用word2vec工具将训练语料映射为200维的字向量文本数据。隐藏层的节点个数设置为200。
+模型训练的学习率（learn rate）取0.001，优化算法使用随机梯度下降算法（Stochastic Gradient Descent，SGD）。
+分类器使用多类分类的逻辑回归分类器，使用LSTM模型隐藏层最后一个节点的输出值作为分类特征向量。训练循环次数为50，
+批尺寸（batch size）为200。
+
+（2）传统CNN模型
+
+模型结构与实现方式同样由文献\cite{zhou2016compositional}提供，
+词向量版本使用Ansj中文分词开源库以及word2vec工具将训练语料映射为200维的词向量文本数据，
+字向量版本使用word2vec工具将训练语料映射为200维的字向量文本数据。卷积层使用大小为3、4、5的三类卷积核，每类卷积核的个数为128。
+池化层使用最大池化算法。
+模型训练的学习率（learn rate）取0.001，优化算法使用随机梯度下降算法（Stochastic Gradient Descent，SGD）。
+分类器使用多类分类的逻辑回归分类器。训练循环次数为50，
+批尺寸（batch size）为200。
+
+（3）传统卷积循环网络模型（CLSTM）
+
+模型依据文献\cite{Zhou2015A}实现，
+词向量版本使用Ansj中文分词开源库以及word2vec工具将训练语料映射为200维的词向量文本数据，
+字向量版本使用word2vec工具将训练语料映射为200维的字向量文本数据。
+卷积层使用大小为3、4、5的三类卷积核，每类卷积核的个数为128。
+池化层使用最大池化算法。
+LSTM层的隐藏节点个数设置为200。
+模型训练的学习率（learn rate）取0.001，优化算法使用随机梯度下降算法（Stochastic Gradient Descent，SGD）。
+分类器使用多类分类的逻辑回归分类器。训练循环次数为50，
+批尺寸（batch size）为200。
+
+（4）Attention-Based卷积循环网络模型(Attention-CLSTM)
+
+模型依据\ref{ACLSTM_section}小节的设计实现，
+词向量版本使用Ansj中文分词开源库以及word2vec工具将训练语料映射为200维的词向量文本数据，
+字向量版本使用word2vec工具将训练语料映射为200维的字向量文本数据。
+卷积层使用大小为3、4、5的三类卷积核，每类卷积核的个数为128。
+池化层使用k-max池化算法。
+LSTM层的隐藏节点个数设置为200。
+Attention层隐藏参数向量长度为200。
+模型训练的学习率（learn rate）取0.001，优化算法使用随机梯度下降算法（Stochastic Gradient Descent，SGD）。
+分类器使用多类分类的逻辑回归分类器。训练循环次数为50，
+批尺寸（batch size）为200。
+
+本文设计的分类模型同时使用词向量文本数据与字向量文本数据，都为200维。两个通道的
+卷积层都使用大小为3、4、5的三类卷积核，每类卷积核的个数为128，池化层都使用k-max池化算法，
+LSTM层的隐藏节点数目与Attention层的隐藏参数向量长度也都为200。
+模型训练的学习率（learn rate）取0.0001，优化算法使用随机梯度下降算法（Stochastic Gradient Descent，SGD）。
+分类器使用多类分类的逻辑回归分类器。训练循环次数为50，
+批尺寸（batch size）为200。
+\subsection{实验结果和分析}
+本文对上一个小节设计的实验模型在新闻标题语料库上进行实验，每个模型都训练5次并选取平均结果。
+实验对比结果如表\ref{classification_result_table}所示。
+\begin{table}[h]
+    \caption{实验对比结果}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        模型 & 字向量 & 词向量 \\
+        \hline
+        传统CNN & 0.855679 & 0.835943 \\
+        \hline
+        传统LSTM & 0.869336 & 0.849313 \\
+        \hline
+        CLSTM & 0.894824 & 0.872391 \\
+        \hline
+        Attention-Based CLSTM & 0.89947 & 0.87346 \\
+        \hline
+        双通道Attention-Based CLSTM（本文设计） & \multicolumn{2}{|c|}{0.913441} \\
+        \hline
+    \end{tabular}
+    \label{classification_result_table}
+\end{table}
+从实验结果的1到2行中可以看出，和字向量相比，词向量在短文本分类任务中效果更好，这表明
+词向量在文本特征表达上更加有效，并且使用LSTM结构的循环神经网络比卷积神经网络更加适合
+提取文本特征。表格的第3行与第四行证明结合CNN与RNN网络能够有效提升模型对文本数据的表达能力。
+最后，对比其余模型，本文设计的双通道Attention-Based CLSTM分类模型取得了最好的结果，证明了
+字向量文本特征能够很好的强化原本的词向量文本特征，从而让模型能够进一步的获取短文本的语义，
+有效提高短文本分类的准确率。
 \section{本章小结}
+ 本章主要提出了Attention-Based字词结合卷积循环中文短文本分类模型。
+ 首先介绍了用于提取文本特征的卷积循环神经网络，然后再分析了Attention Model的相关
+ 概念并引入卷积循环神经网络。之后加入字向量数据，设计了一个双通道的短文本分类模型，
+ 弥补了使用单一词向量/字向量的不足。
+ 最后通过对比实验，验证了模型的可行性及有效性。
