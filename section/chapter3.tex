@@ -1,4 +1,5 @@
 \chapter{中文文本表示方法的研究和改进}
+\label{3_section}
 文本的向量化表示是中文短文本分类研究的核心之一。传统的One-hot表示法虽然简单快速，
 但忽略的太多的语义信息，在实际使用中效果较差，达不到人们的预期。
 词嵌入技术将文本中的单词映射到一个连续的向量空间之中，
@@ -157,6 +158,7 @@ RECWE以word2vec工具的CBOW模型为基础，在模型的预测层中增加一
 \label{char_tran_form}
 \end{table}
 \subsection{部首信息增强的中文词向量模型}
+\label{recwe_section}
 本文提出的RECWE模型结合了中文的单词、汉字以及偏旁部首的语义信息，旨在构建适合中文的高效词向量。
 RECWE模型基于CBOW模型\citing{mikolov2013distributed}，
 通过词的平均上下文向量和字与部首的平均上下文向量预测目标词，
@@ -462,7 +464,7 @@ RECWE模型能够很好的找到这样的关系。比如单词对“淋浴”与
     \label{word_analogy_resutl}
     \end{table}
 
-\begin{figure}
+\begin{figure}[!h]
     \includegraphics[scale=0.5]{picture/word_analogy_result.pdf}
     \caption{词类比整体实验结果}
     \label{word_analogy_all_resutl}
@@ -496,7 +498,7 @@ RECWE模型能够很好的找到这样的关系。比如单词对“淋浴”与
     \label{charsim_form}
     \end{table}
 字向量模型的训练参数与上一小结中的训练参数相同，实验结果见表\ref{char_vec_result}所示。
-\begin{table}[ht]
+\begin{table}[!h]
     \caption{字向量评估结果}
     \begin{tabular}{|c|c|}
         \hline
