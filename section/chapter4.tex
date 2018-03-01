@@ -72,7 +72,8 @@ Bi-LSTM网络的整体流程如图\ref{Bi-LSTM}所示，对于从上层网络传
     \label{Bi-LSTM}
 \end{figure}
 
-\section{Attention Model}
+\section{Attention-Based字词结合卷积循环中文短文本分类网络}
+\subsection{Attention Model}
 Attention Model（注意力机制）是近几年兴起的一个新型模型，在很多场景被证明有效。
 模型以认知心理学中的人脑注意力理论为核心，认为人脑在处理具体任务时，对于相关事物的注意力会集中在
 某一个特定的地方，忽略其他无关的地方，而不是对每个地点分配相同的注意力。
@@ -138,8 +139,6 @@ Attention Model的出现很好的解决了这个问题，在Attention-Based编�
 这一思想在短文本分类任务中同样适用，因为对于短文本文本分类任务，确定分类结果的
 往往是文本的几个关键词，如情感分析中的“喜欢”、“讨厌”等词，如果能够判断出这些关键词，
 就可以极大的增强分类模型的结果。
-
-\section{Attention-Based字词结合卷积循环中文短文本分类网络}
 \subsection{Attention-Based卷积循环特征提取网络}
 \label{ACLSTM_section}
 根据Attention Model的思想，

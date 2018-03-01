@@ -1,15 +1,36 @@
 \begin{chineseabstract}
-为了适应日益增长的宽带信号和非线性系统的工程应用，用于分析瞬态电磁散射问题的时域积分方程方法研究日趋活跃。本文以时域积分方程时间步进算法及其快速算法为研究课题，重点研究了时间步进算法的数值实现技术、后时稳定性问题以及两层平面波算法加速计算等，主要研究内容分为四部分。
+随着我国信息化建设的不断推进，以及移动互联网的不断发展，
+互联网中的信息开始爆炸式的增长，进入了以短文本信息为主的碎片化信息时代。
+如何从浩如烟海的信息碎片中准确的获取有用信息，成了学者及商业公司关注的焦点。
+本文主要研究了中文短文本分类的相关技术，通过对经典文本分类模型的有效改进，
+设计并实现了一个新型的短文本分类模型，并改进了传统词向量训练模型，来实现
+适合中文短文本分类的分类网络。本文的主要工作包括了以下几个方面：
+\begin{enumerate}
+    \item 通过研究传统词向量模型在中文语料上的不足，本文改进了原有的训练模型，引入
+    了中文汉字信息以及偏旁部首信息，让词向量模型更加适合中文文本，并通过部首转义机制，
+    将部首替换为与其对应的汉字，使得词向量模型能够更好地识别具有语义联系的词语
+    ，让具有相似语义的单词能够在向量空间中彼此靠近，性能更优，解释性更强。并且以此为基础提出了
+    另一个字向量模型，弥补了分词错误对词向量的影响，为后续的分类模型提供了更加丰富的语义信息。
+    \item 本文将卷积神经网络与循环神经网组合使用，引入Attention Model技术，
+    设计了一个全新的特征提取网络。
+    该网络采用了k-max池化与双向循环神经网络技术，具有更好的特征提取能力，能够有效的识别并提取
+    文本数据中的语义特征。通过Attention Model技术，
+    网络更加专注分类特征的提取，剔除无效特征，很好的提升了分类模型的分类效果。
+    整体上提升了特征向量质量。
+    \item 本文采用双通道的短文本分类模型结构，结合了字向量与词向量的文本数据，
+    从两个不同的文本表示中对同一段文本提取文本特征，
+    极大的丰富了输入短文本的文本信息，有效提升了分类效果，
+    并通过与其他同类模型的对比实验，证明了模型的可行性。
+\end{enumerate}
 
-……
 
-\chinesekeyword{时域电磁散射，时域积分方程，时间步进算法，后时不稳定性，时域平面波算法}
+\chinesekeyword{短文本，文本分类，深度学习，Attention技术，词向量}
 \end{chineseabstract}
 
 
 
 \begin{englishabstract}
-With the widespread engineering applications ranging from broadband signals and non-linear systems, time-domain integral equations (TDIE) methods for analyzing transient electromagnetic scattering problems are becoming widely used nowadays. TDIE-based marching-on-in-time (MOT) scheme and its fast algorithm are researched in this dissertation, including the numerical techniques of MOT scheme, late-time stability of MOT scheme, and two-level PWTD-enhanced MOT scheme. The contents are divided into four parts shown as follows.
+With aaa
 
 \englishkeyword{time-domain electromagnetic scattering, time-domain integral equation (TDIE), marching-on in-time (MOT) scheme, late-time instability, plane wave time-domain (PWTD) algorithm}
 \end{englishabstract}
