@@ -305,9 +305,10 @@ LSTM层的隐藏节点个数设置为200。
 分类器使用多类分类的逻辑回归分类器。训练循环次数为50，
 批尺寸为200。
 
-（4）Attention-Based卷积循环网络模型(Attention-CLSTM)
+（4）Attention-Based卷积循环网络模型(Attention-Based CLSTM，ACLSTM)
 
 模型依据\ref{ACLSTM_section}小节的设计实现，
+在对比模型（3）的基础上添加了Attention Model技术，
 词向量版本使用Ansj中文分词开源库以及word2vec工具将训练语料映射为200维的词向量文本数据，
 字向量版本使用word2vec工具将训练语料映射为200维的字向量文本数据。
 卷积层使用大小为3、4、5的三类卷积核，每类卷积核的个数为128。
@@ -327,9 +328,9 @@ LSTM层的隐藏节点数目与Attention层的隐藏参数向量长度也都为2
 \subsection{实验结果和分析}
 本文对上一个小节设计的实验模型在新闻标题语料库上进行实验，
 每个模型都训练5次并选取平均结果。
-实验对比结果如表\ref{classification_result_table}所示。
+实验对比结果如表\ref{classification_result_table}与图\ref{classifcation_pic}所示。
 \begin{table}[h]
-    \caption{实验对比结果}
+    \caption{分类实验对比结果}
     \begin{tabular}{|c|c|c|}
         \hline
         模型 & 词向量 & 字向量 \\
@@ -347,6 +348,11 @@ LSTM层的隐藏节点数目与Attention层的隐藏参数向量长度也都为2
     \end{tabular}
     \label{classification_result_table}
 \end{table}
+\begin{figure}[!h]
+    \includegraphics[scale=0.45]{picture/classification.pdf}
+    \caption{分类实验对比结果}
+    \label{classifcation_pic}
+\end{figure}
 
 从实验结果中可以看出，虽然传统CNN能够动态获取文本的本地特征，
 但由于忽略了特征的位置信息，因此分类效果不如其他模型。

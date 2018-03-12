@@ -272,7 +272,7 @@ LSA使用词-文档矩阵（Occurences Matrix)来对文档进行描述，矩阵�
 并通过奇异值分解技术（Singular Value Decomposition，SVD）对矩阵进行降维，
 去除矩阵中非必要的信息，最终得到文档的向量表示。
 
-可以明显看出，LSA方法极度依赖语料库的统计信息，对于篇幅较长，内容较多的长文本
+但是，这样的方法极度依赖语料库的统计信息，对于篇幅较长，内容较多的长文本
 非常适用，但对于本文主要研究的短文本语料，由于单条文本长度很短，这类方法并不适合，
 所以这里不做过多的讨论。
 
@@ -293,6 +293,7 @@ P\left ( w_i|w_{i-n+1}...w_{i-1} \right )...P\left ( w_m|w_{m-n+1}...w_{m-1} \ri
 语料库的统计信息，适用于各种类型的语料库。
 
 \subsection{基于字的文本表示方法}
+\label{char_rep}
 基于字的文本表示方法是近几年刚刚兴起的一种文本表示方法，该方法与
 基于词的文本表示方法相反，认为字才是文本的最小分割单元，并使用字向量序列
 来表示文本。
@@ -312,7 +313,7 @@ P\left ( w_i|w_{i-n+1}...w_{i-1} \right )...P\left ( w_m|w_{m-n+1}...w_{m-1} \ri
 \section{词向量训练模型}
 \subsection{神经网络语言模型}
 神经网络语言模型（Neural Network Language Model，NNLM）是词向量模型中最经典的
-模型，最早由由Bengio提出\citing{bengio2003neural}。
+模型，最早由Bengio提出\citing{bengio2003neural}。
 该模型依照N-Gram语言模型的思想，
 使用全连接的前馈神经网络（Feed Forward Neural Network，FFNN），
 对语言进行建模，是N-Gram语言模型的一个完整实现，具体结构如图\ref{nnlm}所示。
@@ -322,11 +323,60 @@ P\left ( w_i|w_{i-n+1}...w_{i-1} \right )...P\left ( w_m|w_{m-n+1}...w_{m-1} \ri
     \label{nnlm}
 \end{figure}
 
-可以看出，NNLM采用单隐藏层设计，以目标词$w_i$的前$i-1$个词作为输入，
-预测目标词为$w_i$的概率。通过这样的设计，NNLM能够不断的根据语料中单词的出现
-次序学习语言特征，最终获得每个词语的向量表示，并具有很强的泛化能力。
-但与此对应的，全连接的网络结构也极大的增加了整个模型的计算复杂度，特别是当$i$的值
-取的比较大时，模型的计算量更是呈几何形式增长。
+对于输入的单词序列$\left \{ w_{1},w_{2},...,w_{i-n+1} \right \}$
+（目标词$w_i$的前$n$个单词），NNLM首先将它对应的单词向量拼接，得到上下文向量$h$，
+如公式\ref{nnlm_input_eqn}所示。
+\begin{equation}
+    h = v_{w_1} \oplus v_{w_2} \oplus ... \oplus v_{w_{i-n+1}}
+    \label{nnlm_input_eqn}
+\end{equation}
+然后将这个上下文向量$h$输入全连接的隐藏层进行非线性转换，得到中间向量$m$，
+如公式\ref{nnlm_mid_eqn}所示。
+\begin{equation}
+    m = \tanh \left ( Hh+b_H \right )
+    \label{nnlm_mid_eqn}
+\end{equation}
+这里$H$为隐藏层的权重矩阵，$b_H$则为对应的偏置矩阵。
+
+隐藏层完成非线性转换后，将中间向量$m$输入后续的Softmax层。Softmax层
+接收到$m$后首先会对其进行处理，然后利用Softmax函数得到最终的
+条件概率，如公式\ref{nnlm_softmax_eqn1}与\ref{nnlm_softmax_eqn2}所示。
+\begin{equation}
+    s = Sm+b_S
+    \label{nnlm_softmax_eqn1}
+\end{equation}
+\begin{equation}
+    P\left ( w_i|w_{t-(n-1)},w_{t-(n-2)},...,w_{t-1} \right ) = 
+    Softmax\left(s\right)=
+    \frac{\exp s_i}{\sum_{k=1}^{|V|}\exp s_k}
+    \label{nnlm_softmax_eqn2}
+\end{equation}
+其中，$S$与$b_S$是Softmax层的权重矩阵与偏置矩阵，
+$V$表示语料库的统计词表，$|V|$则是词表中单词的数量，
+$P\left ( w_i|w_{t-(n-1)},w_{t-(n-2)},...,w_{t-1} \right )$是模型
+输出的条件概率，即在当前上下文条件下下一词为目标词$w_i$的概率。
+
+最后对于训练语料库$D$，NNLM选用交叉熵损失函数作为模型的目标函数：
+\begin{equation}
+    L = -\sum_{w_t \in D}\log P\left ( w_t | w_{t-(n-1)},w_{t-(n-2)},...,w_{t-1} \right )
+    \label{nnlm_loss_eqn}
+\end{equation}
+
+
+还有一点需要说的是，为了减少模型的训练时间，Bengio给模型添加了从输入层直接到Softmax层
+的“捷径”，如图\ref{nnlm}中的虚线，此时Softmax函数的接收向量将由两个
+输入组合而成，如公式所示。
+\begin{equation}
+    s = S\tanh \left ( Hh+b_H \right ) + Wh + b_S
+\end{equation}
+
+在文献\cite{bengio2003neural}中Bengio指出，添加该“捷径”可以在训练时减少
+模型近一半的迭代次数，但也会降低词向量的质量，所以需要酌情使用该技巧。
+
+总体来说，NNLM通过将输入层的词向量纳入训练参数的方式，让模型在能够在对语言进行建模
+的同时得到单词的向量表示，可以说是一个里程碑式的模型，后续非常多的词向量训练模型
+都是以它的思想为基本，在其之上改进与拓展。
+
 
 \subsection{word2vec}
 \label{sect_word2vec}
@@ -352,22 +402,52 @@ CBOW的结构如图\ref{cbow}所示，可以看出，其核心架构与NNLM是�
     \label{cbow}
 \end{figure}
 
-首先，CBOW以目标词前面和后面的单词共同作为目标词的上下文环境，而NNLM中只是以
+首先，CBOW以目标词前面和后面的$m$个单词共同作为目标词的上下文环境，而NNLM中只是以
 目标词的前$n$个单词作为上下文。
 
 其次，CBOW删除了NNLM中前向反馈神经网络的隐藏层，
 将中间层直接和输出层的softmax节点连接，
-并且忽略了目标词上下文的顺序信息，把输入的全部词向量都汇聚在同一个隐藏层节点上。
+并且忽略了目标词上下文的顺序信息，
+把输入的全部词向量都汇聚在同一个隐藏层节点上（CBOW中称之为投影）直接得到上下文向量$c$
+，如公式\ref{cbow_sum_eqn}所示。
+\begin{equation}
+    c = \frac{1}{2m}\sum_i w_{t+i}, j\in \{-m,...,m\}
+    \label{cbow_sum_eqn}
+\end{equation}
 
-同时，在网络的训练方面，CBOW使用层次Softmax技术（又称为Huffman Softmax技术）
-替代NNLM中的全连接Softmax网络来加速模型的训练。
-模型训练时，CBOW首先依据整个训练语料中出现的单词建立一个Huffman Softmax树，
+另一方面，CBOW为了优化NNLM中的全连接Softmax层，提供了两种加速技术
+：层次Softmax技术（Hierarchical Softmax）与负采样技术（Negative Sampling）。
+
+层次Softmax技术主要依靠Huffman Softmax树对原始Softmax函数近似求解，
+以此简化计算。
+模型训练时，CBOW首先依据整个训练语料中出现的单词建立Huffman Softmax树，
 然后在预测时，让当前目标词的上下文向量从根节点出发，沿着Huffman Softmax树
-不断向下进行二分类操作，最终到达叶节点，并根据结果更新上下文中的词向量。
-通过这样的训练方式，对于包含$|D|$个不同单词的训练语料库$D$，
+不断向下进行二分类操作，直至叶节点，
+最后将每次分类产生的概率进行乘积，就可以得到模型所需的条件概率$p(w_t|c)$。
+
+通过这样的方式，对于包含$|D|$个不同单词的训练语料库$D$，
 层次Softmax技术预测一个单词的时间复杂度只有$O\left ( \log|D| \right )$，
 遍历整个训练语料的时间则是$|D|O\left ( \log|D| \right )$，
 与NNLM中全连接Softmax的$O\left ( |D|^2 \right )$相比，有了非常大的提升。
+
+负采样技术是CBOW提供的另一种加速计算技术，
+该方法是噪声对比估计（Noise-Contrastive Estimation，NCE）的简化版本，
+本质上是通过将目标词$w_t$替换为语料库$D$中的其他单词来构造一些称为
+负样本的词串，以此将模型的优化目标变为最大化正样本的概率以及最小化负样本的概率。
+对于语料库$D$，其目标函数如公式\ref{neg_loss_eqn}所示。
+\begin{equation}
+    L = \sum_{w\in D} \sum_{w\in \{w_t\} \cup w\in NEG\left ( w_t \right )} \log p\left ( w|C \right )
+    \label{neg_loss_eqn}
+\end{equation}
+式中$C$表示$w_t$的上下文
+（即$C=\{w_{t-n},w_{t-n+1},...,w_{t+n-1},w_{t+n}\}$），
+$NEG(w_t)$表示目标词$w_t$的负样本集合，
+条件概率$p\left ( w|C \right )$可以通过公式\ref{neg_p_eqn}得到。
+\begin{equation}
+    p\left ( w|C \right )=\sigma\left ( v_w\theta  \right )^{L(w)}+\left ( 1- \sigma\left ( v_w\theta  \right )\right )^{1-L\left ( w \right )}
+    \label{neg_p_eqn}
+\end{equation}
+其中$v_w$为单词$w$的词向量，$L(w)$为标签函数，当$w$为正样本时$L(w)$取值为$1$，否则为$0$。
 
 （2）Skip-gram模型
 
@@ -380,10 +460,9 @@ CBOW的结构如图\ref{cbow}所示，可以看出，其核心架构与NNLM是�
 \end{figure}
 对于句子$S$，Skip-gram模型的目标函数如式\ref{skip-gram_eqn}所示。
 \begin{equation}
-    \arg \max_{\theta } \prod_{\left ( w,c \right )\in S}p\left ( c|w;\theta \right )
+    \arg \max_{\theta } \prod_{\left ( w,C \right )\in S}p\left ( c|w;\theta \right )
     \label{skip-gram_eqn}
 \end{equation}
-其中$w$为目标词，$c$为目标词$w$周围的一些单词，长度由模型的窗口大小决定，$\theta$是隐藏层参数。
 除此之外，Skip-gram模型的其他方面都与CBOW模型类似，这里不再赘述。
 
 

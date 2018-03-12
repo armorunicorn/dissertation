@@ -189,11 +189,11 @@ Redis（REmote DIctionary Server）分布式数据库为基础实现，通过将
 字/词向量训练模块主要用来获取分类模型使用的词向量与字向量，采用增量训练的方式，
 只有在语料数据或新词/新字数量超过一定阈值的时候，才开始训练，更新当前使用的词/字向量。
 
-由\ref{recwe_section}节的目标公式以及负采样算法可以继续推导得式\ref{neg_eqn}：
+字/词向量模型使用负采样算法训练，由\ref{recwe_section}节的目标公式以及\ref{sect_word2vec}小节的公式\ref{neg_p_eqn}可以继续推导得式\ref{neg_eqn}：
 \begin{equation}
     \begin{aligned}
-        L &= \sum_{w\in l}\sum_{u\in \left \{ w \right \}\cup NEG\left ( w \right )}\left \{ L^w\left ( u \right ) \cdot \log \left [ \sigma \left ( X_w^{\top }\theta^u  \right ) \right ]+\left [ 1-  L^w\left ( u \right )\right ]\cdot \log \left [1- \sigma \left ( X_w^{\top }\theta^u  \right ) \right ]\right \} \\
-        &+ \sum_{c\in l}\sum_{u\in \left \{ c \right \}\cup NEG\left ( c \right )}\left \{ L^c\left ( u \right ) \cdot \log \left [ \sigma \left ( X_c^{\top }\theta^u  \right ) \right ]+\left [ 1-  L^c\left ( u \right )\right ]\cdot \log \left [1- \sigma \left ( X_c^{\top }\theta^u  \right ) \right ]\right \}
+        L &= \sum_{w\in l}\sum_{u\in \left \{ w \right \}\cup NEG\left ( w \right )}\left \{ L\left ( u \right ) \cdot \log \left [ \sigma \left ( v_w\theta  \right ) \right ]+\left [ 1-  L\left ( u \right )\right ]\cdot \log \left [1- \sigma \left ( v_w\theta  \right ) \right ]\right \} \\
+        &+ \sum_{c\in l}\sum_{u\in \left \{ c \right \}\cup NEG\left ( c \right )}\left \{ L\left ( u \right ) \cdot \log \left [ \sigma \left ( v_c\theta  \right ) \right ]+\left [ 1-  L\left ( u \right )\right ]\cdot \log \left [1- \sigma \left ( v_c\theta  \right ) \right ]\right \}
     \end{aligned}
     \label{neg_eqn}
 \end{equation}
@@ -201,10 +201,10 @@ Redis（REmote DIctionary Server）分布式数据库为基础实现，通过将
 再根据式\ref{neg_eqn}分别对各个参数求导，即可得到词向量/字向量的梯度更新方法，如公式所示\ref{neg_update_eqn}。
 \begin{equation}
     \begin{aligned}
-        q&=\sigma \left ( X_w^\top \theta^u \right )\\
-        g&=\eta \left ( L^w\left ( u \right )-q \right )\\
-        e &:=e+g\theta^u\\
-        \theta^u &:=\theta^u+gX_w\\
+        q&=\sigma \left ( v_w \theta \right )\\
+        g&=\eta \left ( L\left ( u \right )-q \right )\\
+        e &:=e+g\theta\\
+        \theta^u &:=\theta+gv_w\\
         v_u &:=v_u+e
     \end{aligned}
     \label{neg_update_eqn}
