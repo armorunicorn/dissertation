@@ -1,3 +1,6 @@
+\documentclass{standalone}
+    % preamble: usepackage, etc.
+\begin{document}
 \begin{chineseabstract}
 随着我国信息化建设的不断推进，以及移动互联网的不断发展，
 互联网中的信息开始爆炸式的增长，进入了以短文本信息为主的碎片化信息时代。
@@ -25,14 +28,50 @@
 \end{enumerate}
 
 
-\chinesekeyword{短文本，文本分类，深度学习，Attention技术，词向量}
+\chinesekeyword{短文本，文本分类，深度学习，Attention技术，中文词向量}
 \end{chineseabstract}
 
 
-
 \begin{englishabstract}
-With aaa
+    With the continuous information construction in China and the development of Mobile Internet, 
+    information from the Internet grows explosively, 
+    the age of fragmented information which is based on short text information is coming. 
+    Therefore, the way to accurately extract required information becomes the focus of scholars and commercial company.
+    This study presents the research in Chinese short text classification technologies, 
+    the training model of word embedding and character embedding is improved. 
+    In addition, the classic text classification model is enhanced effectively. 
+    Then, a classification model which is suitable for Chinese short text is designed and implemented. 
+    This paper introduces works in three parts:
+    
+    First,Based on the research of the deficiency of word embedding in Chinese corpus, 
+    previous training model is improved by adding Chinese characters and radicals information, 
+    which provides extra cooccurrence information to word embedding. 
+    It is more suitable for Chinese text. 
+    Moreover, radical transformation mechanism which changes radical 
+    to the corresponding Chinese character makes word embedding effectively to identify words with connected semantic. 
+    Thus, words with similar semantic is closer in vector space so that the performance and explanatory is better. 
+    Based on this, character embedding, which reduces the effect to word embedding from word break error, 
+    provides richer semantic information for subsequent classification models. 
 
-\englishkeyword{time-domain electromagnetic scattering, time-domain integral equation (TDIE), marching-on in-time (MOT) scheme, late-time instability, plane wave time-domain (PWTD) algorithm}
+    Second, the convolutional neural network and recurrent neural network 
+    are combined to design a new feature extraction network 
+    using Attention Model technology. 
+    The network employs k-max pooling and bidirectional cyclic neural network technology which 
+    has stronger feature extraction capability to identify and extract semantic feature from text data. 
+    Using Attention Model technology, Internet pays more attention to extract classification features 
+    and removes invalid features. 
+    Therefore, quality of feature vector is improved while classification effect of models is more obvious.
+
+    Third,this paper adopts a dual-channel short text classification model, 
+    which combines text data of word embedding and character embedding, 
+    to extract text feature from two different texts. 
+    It greatly enriches text information of short text and enhanced the effect of classification. 
+    Besides, comparing with other similar models in experiments, 
+    the model is proved feasibly.
+
+\englishkeyword{Short Text, Text Classification, Deep Learning, Attention Technology, 
+Chinese Word Embedding}
 \end{englishabstract}
+
+\end{document}
     

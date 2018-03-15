@@ -41,15 +41,15 @@
 
 \ifwindows
   \setallmainfonts{Times New Roman}
-  \setCJKmainfont[AutoFakeBold=true]{SimSun}
+  \setCJKmainfont{SimSun}
   \newCJKfontfamily{\heiti}{SimHei}
 \else
 \ifmacosx
   \setallmainfonts{Times New Roman}
-  \setCJKmainfont[AutoFakeBold=true]{Songti SC}
+  \setCJKmainfont{Songti SC}
   \newCJKfontfamily{\heiti}{STHeiti}
 \else
-  \setCJKmainfont[AutoFakeBold=true]{simsun.ttc}
+  \setCJKmainfont{simsun.ttc}
   \newCJKfontfamily{\heiti}{simhei.ttf}
   \setallmainfonts[
     BoldFont=timesbd.ttf,
@@ -59,14 +59,43 @@
 \fi
 \fi
 
+% value > 0
+\def\xeCJKembold{0.4}
+
+% hack into xeCJK, you don't need to understand it
+\def\saveCJKnode{\dimen255\lastkern}
+\def\restoreCJKnode{\kern-\dimen255\kern\dimen255}
+
+% save old definition of \CJKsymbol and \CJKpunctsymbol for CJK output
+\let\CJKoldsymbol\CJKsymbol
+\let\CJKoldpunctsymbol\CJKpunctsymbol
+
+% apply pdf literal fake bold
+\def\CJKfakeboldsymbol#1{%
+  \special{pdf:literal direct 2 Tr \xeCJKembold\space w}%
+  \CJKoldsymbol{#1}%
+  \saveCJKnode
+  \special{pdf:literal direct 0 Tr}%
+  \restoreCJKnode}
+\def\CJKfakeboldpunctsymbol#1{%
+  \special{pdf:literal direct 2 Tr \xeCJKembold\space w}%
+  \CJKoldpunctsymbol{#1}%
+  \saveCJKnode
+  \special{pdf:literal direct 0 Tr}%
+  \restoreCJKnode}
+\newcommand\CJKfakebold[1]{%
+  \let\CJKsymbol\CJKfakeboldsymbol
+  \let\CJKpunctsymbol\CJKfakeboldpunctsymbol
+  #1%
+  \let\CJKsymbol\CJKoldsymbol
+  \let\CJKpunctsymbol\CJKoldpunctsymbol}
+
+
 \RequirePackage{zhnumber}
 \RequirePackage{pifont}
 
-\RequirePackage[hyphens]{url}
-\RequirePackage[hyperfootnotes=false,
-    bookmarksnumbered,
-    bookmarksdepth=4
-]{hyperref}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+\RequirePackage[hyperfootnotes=false, bookmarksdepth=4]{hyperref}
 \hypersetup{
   colorlinks=true,
   citecolor=black,
@@ -131,7 +160,6 @@
   \fancyhead[C]{\fontsize{10.5pt}{12.6pt}\selectfont 缩略词表}
   \fancyfoot[CE,CO]{\fontsize{9pt}{10.8pt}\selectfont\Roman{pseudopage}}
   \setlength\glsdescwidth{.7\textwidth}
-  \pdfbookmark{缩略词表}{glossary}
   \printglossary[style=long-uestc, title={\protect\centering 缩略词表}, nonumberlist, nogroupskip]
 }
 \makeglossaries
@@ -202,11 +230,7 @@
 \renewcommand{\listfigurename}{图目录}
 \renewcommand{\listtablename}{表目录}
 
-% \newcommand*{\noaddvspace}{\renewcommand*{\addvspace}[1]{}}
-% \addtocontents{lof}{\protect\noaddvspace}
-% \addtocontents{lot}{\protect\noaddvspace}
-
-\pretocmd{\listoffigures}{
+\newcommand{\thesisfigurelist}{
     \newpage
   \fancyhf{}
   \fancyhead[C]{\fontsize{10.5pt}{12.6pt}\selectfont 图目录}
@@ -214,30 +238,21 @@
   \renewcommand{\cftfigpresnum}{图}
   \addtolength{\cftfignumwidth}{12pt}
   \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} 
-}{}{}
-
-\newcommand{\thesisfigurelist}{
   \listoffigures
 }
-
-\pretocmd{\listoftables}{
+\newcommand{\thesistablelist}{
     \newpage
   \fancyhf{}
   \fancyhead[C]{\fontsize{10.5pt}{12.6pt}\selectfont 表目录}
   \fancyfoot[CE,CO]{\fontsize{9pt}{10.8pt}\selectfont\Roman{pseudopage}}
   \renewcommand{\cfttabpresnum}{表}
   \addtolength{\cfttabnumwidth}{12pt}
-  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
-}{}{}
-
-\newcommand{\thesistablelist}{
+  \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} 
   \listoftables
 }
 
-\RequirePackage[a4paper,
-  inner=3cm, outer=3cm, top=3cm, bottom=3cm,
-  bindingoffset=0cm]{geometry}
-
+\RequirePackage[a4paper, inner=3cm, outer=3cm, top=3cm,
+bottom=3cm, bindingoffset=0cm]{geometry}
 \setlength{\headheight}{15pt}
 
 \pagestyle{fancy}
@@ -285,7 +300,7 @@
 \newcommand{\chineseperiod}{\char"3002}
 \newcommand{\chinesequestion}{\char"FF1F}
 \newcommand{\chineseexclamation}{\char"FF01}
-\newcommand{\chinesecomma}{\char"FF0C}
+\newcommand{\chineseecomma}{\char"FF0C}
 \newcommand{\chinesesemicolon}{\char"FF1B}
 \newcommand{\chineseleftparenthesis}{\char"FF08}
 \newcommand{\chineserightparenthesis}{\char"FF09}
@@ -373,7 +388,6 @@
 \newenvironment{chineseabstract}{
   \fancyfoot[CE,CO]{\fontsize{9pt}{10.8pt}\selectfont\Roman{pseudopage}}
   \pagenumbering{Roman}
-    \pdfbookmark{中文摘要}{chineseabstract}
     \chapter*{摘\chinesespace 要}
     \thispagestyle{fancy}
     \fancyhead[C]{\fontsize{10.5pt}{12.6pt}\selectfont 摘要}
@@ -390,7 +404,7 @@
   \vspace{\baselineskip}
   \noindent
     \begin{minipage}[t]{48pt}
-      \noindent\textbf{关键词\chinesecolon}
+      \noindent\CJKfakebold{关键词\chinesecolon}
     \end{minipage}
     \begin{minipage}[t]{\linewidth - 48pt}
       #1
@@ -398,7 +412,6 @@
 }
   
 \newenvironment{englishabstract}{
-  \pdfbookmark{英文摘要}{englishabstract}
   \chapter*{\bfseries ABSTRACT}
     \thispagestyle{fancy}
     \fancyhead[C]{\fontsize{10.5pt}{12.6pt}\selectfont ABSTRACT}
@@ -479,7 +492,6 @@
   \fancyhf{}
   \fancyhead[C]{\fontsize{10.5pt}{12.6pt}\selectfont 目录}
   \fancyfoot[CE,CO]{\fontsize{9pt}{10.8pt}\selectfont\Roman{pseudopage}}
-  \pdfbookmark{目录}{toc}
 }{}{}
 
 \newcommand{\thesistableofcontents}{
@@ -497,6 +509,7 @@
   \markboth{致谢}{致谢}
   \thispagestyle{fancy}
 }
+
 
 \newcommand{\thesischapterexordium}{
   \checkoddpage

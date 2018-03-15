@@ -1,3 +1,6 @@
+\documentclass{standalone}
+% preamble: usepackage, etc.
+\begin{document}
 \chapter{短文本分类系统设计和实现}
 本章主要阐述短文本分类系统的功能设计与代码实现，并详细介绍系统包含的各个功能模块。
 整个系统可以分为离线网络训练与在线短文本分类两大部分，离线网络训练用于语料库更新以及
@@ -235,7 +238,7 @@ Redis（REmote DIctionary Server）分布式数据库为基础实现，通过将
     }
 \end{lstlisting}
 
-梯度计算部分是根据公式\label{neg_update_eqn}计算当前输入对应的梯度，代码如下所示。
+梯度计算部分是根据公式\ref{neg_update_eqn}计算当前输入对应的梯度，代码如下所示。
 \begin{lstlisting}[language={[ANSI]C},frame=shadowbox,rulesepcolor=\color{red!0!green!0!blue!0}] 
     
 for(d = 0; d < negative + 1; d++)
@@ -370,7 +373,7 @@ for(a = b; a < window * 2 + 1 - b; a++)
 给系统发送JSON数据，系统即会返回分类结果。服务网络由多台服务节点组成，并使用
 Nginx反向代理服务器提供链接分发服务，保证系统的稳定性以及可拓展性，具体框架如图\ref{server_chart}所示。
 \begin{figure}[!hbp]
-    \includegraphics[scale=0.6]{picture/server_chart.png}
+    \includegraphics[scale=0.4]{picture/server_chart.png}
     \caption{分类服务模块基本框架示意图}
     \label{server_chart}
 \end{figure}
@@ -411,7 +414,7 @@ Nginx反向代理服务器提供链接分发服务，保证系统的稳定性以
 本文将在今日头条新闻网站的标题数据上对系统进行实际的测试。
 \subsection{新闻标题语料搜集}
 \begin{figure}[!hbp]
-    \includegraphics[scale=0.5]{picture/spider_data.png}
+    \includegraphics[scale=0.45]{picture/spider_data.png}
     \caption{新闻标题数据增长}
     \label{spider_data_chart}
 \end{figure}
@@ -447,7 +450,7 @@ Nginx反向代理服务器提供链接分发服务，保证系统的稳定性以
 并抽取300条实时新闻，通过系统的分类子系统对其进行测试。测试指标采用了\ref{test_fun}小节
 介绍的准确率与召回率，计算公式如\ref{accuracy}和\ref{recall}所示。
 
-图\ref{acc}和\ref{recall}展示了系统连续5天的准确率与召回率统计，可以看出，准确率整体上保持了一个很高的水准，
+图\ref{acc}和\ref{recall_pic}展示了系统连续5天的准确率与召回率统计，可以看出，准确率整体上保持了一个很高的水准，
 而与之相比，系统前期的召回率则非常低，这主要是由于开始系统语料库中新闻语料数据较少，
 特别每一类的语料数量非常不均衡，出现次数最少的几类语料（如“时尚”、“游戏”等）甚至
 只占总体语料的10\%~15\%，极大的影响了系统在这些类别上的分类效果。
@@ -463,9 +466,10 @@ Nginx反向代理服务器提供链接分发服务，保证系统的稳定性以
 \begin{figure}[!hbp]
     \includegraphics[scale=0.5]{picture/recall.png}
     \caption{系统运行5天的召回率统计}
-    \label{recall}
+    \label{recall_pic}
 \end{figure}
 
 \section{本章小节}
 本章主要设计并实现了一个短文本分类服务系统。首先对系统的整体架构及运行流程进行了简要描述，
 然后对系统中的重要功能模型进行了进一步的介绍。最后针对今日头条网站进行测试，验证了系统的正确性和有效性。
+\end{document}

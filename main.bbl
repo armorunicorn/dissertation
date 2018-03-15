@@ -1,0 +1,127 @@
+\begin{thebibliography}{lo}
+\interlinepenalty=10000
+\setlength{\itemsep}{0bp}\setlength{\parskip}{0pt}\small
+\bibitem{song2014short} G.~Song, Y.~Ye, X.~Du, et~al. Short text
+  classification: A survey[J]. ISSN 1796-2048 Volume 9, Number 5, May 2014,
+  2014, 9(5): 635
+\bibitem{zelikovitz2005transductive} S.~Zelikovitz, F.~Marquez. Transductive
+  learning for short-text classification problems using latent semantic
+  indexing[J]. International Journal of Pattern Recognition and Artificial
+  Intelligence, 2005, 19(02): 143-163
+\bibitem{chen2011short} M.~Chen, X.~Jin, D.~Shen. Short text classification
+  improved by learning multi-granularity topics[C]. IJCAI, 2011, 1776-1781
+\bibitem{cabrera2013distributional} J.~M. Cabrera, H.~J. Escalante, M.~Montes-y
+  G{\'o}mez. Distributional term representations for short-text
+  categorization[C]. International Conference on Intelligent Text Processing
+  and Computational Linguistics, 2013, 335-346
+\bibitem{feng2013chinese} X.~Feng, Y.~Shen, C.~Liu, et~al. Chinese short text
+  classification based on domain knowledge.[C]. IJCNLP, 2013, 859-863
+\bibitem{socher2012semantic} R.~Socher, B.~Huval, C.~D. Manning, et~al.
+  Semantic compositionality through recursive matrix-vector spaces[C].
+  Proceedings of the 2012 joint conference on empirical methods in natural
+  language processing and computational natural language learning, 2012,
+  1201-1211
+\bibitem{blunsom2014convolutional} P.~Blunsom, E.~Grefenstette,
+  N.~Kalchbrenner. A convolutional neural network for modelling sentences[C].
+  Proceedings of the 52nd Annual Meeting of the Association for Computational
+  Linguistics, 2014, 655-665
+\bibitem{chen2015convolutional} Y.~Chen. Convolutional neural network for
+  sentence classification[C]. Proceedings of the 2014 Conference on EMNLP,
+  2014, 1746–-1751
+\bibitem{lai2015recurrent} S.~Lai, L.~Xu, K.~Liu, et~al. Recurrent
+  convolutional neural networks for text classification.[C]. AAAI, 2015,
+  2267-2273
+\bibitem{zhang2015character} X.~Zhang, J.~Zhao, Y.~LeCun. Character-level
+  convolutional networks for text classification[C]. Advances in neural
+  information processing systems, 2015, 649-657
+\bibitem{li2015component} Y.~Li, W.~Li, F.~Sun, et~al. Component-enhanced
+  chinese character embeddings[C]. Proceedings of the 2015 Conference on EMNLP,
+  2015, 829–-834
+\bibitem{er2016attention} M.~J. Er, Y.~Zhang, N.~Wang, et~al. Attention
+  pooling-based convolutional neural network for sentence modelling[J].
+  Information Sciences, 2016, 373: 388-403
+\bibitem{yang2016hierarchical} Z.~Yang, D.~Yang, C.~Dyer, et~al. Hierarchical
+  attention networks for document classification.[C]. HLT-NAACL, 2016,
+  1480-1489
+\bibitem{薛苏琴2016基于向量空间模型的中文文本相似度的研究}
+  薛苏琴, 牛永洁.
+  基于向量空间模型的中文文本相似度的研究[J].
+  电子设计工程, 2016, 24(10): 28-31
+\bibitem{firth1961papers} J.~R. Firth. Papers in linguistics 1934-1951:
+  Repr[M]. Oxford University Press, 1961
+\bibitem{levy2015improving} O.~Levy, Y.~Goldberg, I.~Dagan. Improving
+  distributional similarity with lessons learned from word embeddings[J].
+  Transactions of the Association for Computational Linguistics, 2015, 3:
+  211-225
+\bibitem{bengio2003neural} Y.~Bengio, R.~Ducharme, P.~Vincent, et~al. A neural
+  probabilistic language model[J]. Journal of machine learning research, 2003,
+  3(Feb): 1137-1155
+\bibitem{mikolov2013distributed} T.~Mikolov, I.~Sutskever, K.~Chen, et~al.
+  Distributed representations of words and phrases and their
+  compositionality[C]. Advances in neural information processing systems, 2013,
+  3111-3119
+\bibitem{chan2016listen} W.~Chan, N.~Jaitly, Q.~Le, et~al. Listen, attend and
+  spell: A neural network for large vocabulary conversational speech
+  recognition[C]. Acoustics, Speech and Signal Processing (ICASSP), 2016 IEEE
+  International Conference on, 2016, 4960-4964
+\bibitem{lecun1989backpropagation} Y.~LeCun, B.~Boser, J.~S. Denker, et~al.
+  Backpropagation applied to handwritten zip code recognition[J]. Neural
+  computation, 1989, 1(4): 541-551
+\bibitem{hochreiter1997long} S.~Hochreiter, J.~Schmidhuber. Long short-term
+  memory[J]. Neural computation, 1997, 9(8): 1735-1780
+\bibitem{chen2015joint} X.~Chen, L.~Xu, Z.~Liu, et~al. Joint learning of
+  character and word embeddings.[C]. IJCAI, 2015, 1236-1242
+\bibitem{xu2016improve} J.~Xu, J.~Liu, L.~Zhang, et~al. Improve chinese word
+  embeddings by exploiting internal structure[C]. Proceedings of NAACL-HLT,
+  2016, 1041-1050
+\bibitem{sun2014radical} Y.~Sun, L.~Lin, N.~Yang, et~al. Radical-enhanced
+  chinese character embedding[C]. International Conference on Neural
+  Information Processing, 2014, 279-286
+\bibitem{yu2017joint} J.~Yu, X.~Jian, H.~Xin, et~al. Joint embeddings of
+  chinese words, characters, and fine-grained subcharacter components[C].
+  Proceedings of the 2017 Conference on Empirical Methods in Natural Language
+  Processing, 2017, 286-291
+\bibitem{su2007hanzi} 苏文正. 汉字简化问题研究[D]. 兰州:
+  兰州大学, 2007, 53
+\bibitem{harris1954distributional} Z.~S. Harris. Distributional structure[J].
+  Word, 1954, 10(2-3): 146-162
+\bibitem{pantel2005inducing} P.~Pantel. Inducing ontological co-occurrence
+  vectors[C]. Proceedings of the 43rd Annual Meeting on Association for
+  Computational Linguistics, 2005, 125-132
+\bibitem{mikolov2013linguistic} T.~Mikolov, W.-t. Yih, G.~Zweig. Linguistic
+  regularities in continuous space word representations[C]. Proceedings of the
+  2013 Conference of the North American Chapter of the Association for
+  Computational Linguistics: Human Language Technologies, 2013, 746-751
+\bibitem{schmidhuber2015deep} J.~Schmidhuber. Deep learning in neural networks:
+  An overview[J]. Neural networks, 2015, 61: 85-117
+\bibitem{kalchbrenner2014convolutional} N.~Kalchbrenner, E.~Grefenstette,
+  P.~Blunsom. A convolutional neural network for modelling sentences[C].
+  Proceedings of the 52nd Annual Meeting of the Association for Computational
+  Linguistics (Volume 1: Long Papers), 2014, 655-665
+\bibitem{xu2015show} K.~Xu, J.~Ba, R.~Kiros, et~al. Show, attend and tell:
+  Neural image caption generation with visual attention[C]. International
+  Conference on Machine Learning, 2015, 2048-2057
+\bibitem{sukhbaatar2015end} S.~Sukhbaatar, J.~Weston, R.~Fergus, et~al.
+  End-to-end memory networks[C]. Advances in neural information processing
+  systems, 2015, 2440-2448
+\bibitem{li2007scalable} J.~Li, M.~Sun. Scalable term selection for text
+  categorization[J]. EMNLP-CoNLL 2007, 2007, 1: 774
+\bibitem{zhou2016compositional} Y.~Zhou, B.~Xu, J.~Xu, et~al. Compositional
+  recurrent neural networks for chinese short text classification[C]. Web
+  Intelligence (WI), 2016 IEEE/WIC/ACM International Conference on, 2016,
+  137-144
+\bibitem{Zhou2015A} C.~Zhou, C.~Sun, Z.~Liu, et~al. A c-lstm neural network for
+  text classification[J]. Computer Science, 2015, 1(4): 39-44
+\bibitem{mccallum1998comparison} A.~McCallum, K.~Nigam, et~al. A comparison of
+  event models for naive bayes text classification[C]. AAAI-98 workshop on
+  learning for text categorization, 1998, 41-48
+\bibitem{hinton1986learning} G.~E. Hinton. Learning distributed representations
+  of concepts[C]. Proceedings of the eighth annual conference of the cognitive
+  science society, 1986, 12
+\bibitem{胡浩2017汉字固有属性} 胡浩, 李平, 陈凯琪.
+  基于汉字固有属性的中文字向量方法研究[J].
+  中文信息学报, 2017, 31(3): 32-40
+\bibitem{pennington2014glove} J.~Pennington, R.~Socher, C.~Manning. Glove:
+  Global vectors for word representation[C]. Proceedings of the 2014 conference
+  on empirical methods in natural language processing (EMNLP), 2014, 1532-1543
+\end{thebibliography}
