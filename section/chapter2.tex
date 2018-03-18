@@ -326,11 +326,11 @@ P\left ( w_i|w_{i-n+1}...w_{i-1} \right )...P\left ( w_m|w_{m-n+1}...w_{m-1} \ri
     \label{nnlm}
 \end{figure}
 
-对于输入的单词序列$\left \{ w_{1},w_{2},...,w_{i-n+1} \right \}$
+对于输入的单词序列$\left \{ w_{i-n+1},w_{i-n+2},...,w_{i-1} \right \}$
 （目标词$w_i$的前$n$个单词），NNLM首先将它对应的单词向量拼接，得到上下文向量$h$，
 如公式\ref{nnlm_input_eqn}所示。
 \begin{equation}
-    h = v_{w_1} \oplus v_{w_2} \oplus ... \oplus v_{w_{i-n+1}}
+    h = v_{w_{i-n+1}} \oplus v_{w_{i-n+2}} \oplus ... \oplus v_{w_{i-1}}
     \label{nnlm_input_eqn}
 \end{equation}
 然后将这个上下文向量$h$输入全连接的隐藏层进行非线性转换，得到中间向量$m$，
@@ -366,7 +366,7 @@ $P\left ( w_i|w_{t-(n-1)},w_{t-(n-2)},...,w_{t-1} \right )$是模型
 \end{equation}
 
 
-还有一点需要说的是，为了减少模型的训练时间，Bengio给模型添加了从输入层直接到Softmax层
+另外，为了减少模型的训练时间，Bengio给模型添加了从输入层直接到Softmax层
 的“捷径”，如图\ref{nnlm}中的虚线，此时Softmax函数的接收向量将由两个
 输入组合而成，如公式所示。
 \begin{equation}
@@ -721,7 +721,7 @@ Attention Model最先被应用与计算机视觉领域中
 \section{本章小结}
 本章首先对文本表示的两种方法进行了介绍，
 接着引出了基于神经网络的短文本分类方法，并阐述了
-卷积神经网络和循环神经网络在文本分类任务中的应用。
+卷积神经网络和循环神经网络在文本分类任务中的应用，最后对Attention Model技术做了说明。
 这些基础内容为本文的后续工作提供了坚实的理论基础，后续章节将根据这些知识
 搭建一个中文短文本分类模型。
 \end{document}

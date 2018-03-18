@@ -239,11 +239,11 @@ $N$表示输入语料的长度。
 
 类似的，子信息上下文向量$h_{i_2}$是词上下文中每个词包含的字及其偏旁部首的“输入”向量的平均值，计算公式如\ref{char_context_fun}所示。
 \begin{equation}
-    h_{i_2}=\frac{1}{X}\sum_{-T\leq j\leq T,j\neq 0} v_{c_{i+j}}+v_{r_{i+j}}
+    h_{i_2}=\frac{1}{X}\sum_{-T\leq j\leq T,j\neq 0} v_{c_{i+j}}+v_{r_{i+j}}+v_{s_{i+j}}
     \label{char_context_fun}
 \end{equation}
-其中$v_{c_{i+j}}$和$v_{r_{i+j}}$分别表示字和偏旁部首的“输入”向量，$X$为
-$v_{c_{i+j}}$和$v_{r_{i+j}}$的数量。
+其中$v_{c_{i+j}}$、$v_{r_{i+j}}$与$v_{s_{i+j}}$分别表示字、部首与偏旁的“输入”向量，$X$为
+$v_{c_{i+j}}$、$v_{r_{i+j}}$和$v_{s_{i+j}}$的数量。
 
 于是，对于语料库$D$，RECWE模型的整体对数似然函数如公式\ref{overall_target_fun}所示。
 \begin{equation}

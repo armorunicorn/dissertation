@@ -1,0 +1,457 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "main.tex",
+			"settings":
+			{
+				"buffer_size": 1104,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 104.0,
+		"last_filter": "Package Control:Install Package",
+		"selected_items":
+		[
+			[
+				"Package Control:Install Package",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 444.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/E/dissertation/section/chapter1.tex",
+		"/C/Users/Saber/.atom/.apmrc",
+		"/C/Users/Saber/.atom/packages/README.md",
+		"/C/Users/Saber/.atom/.apm/.apmrc",
+		"/E/迅雷下载/9102773.C95703C9EB3145175093B568594FF860",
+		"/E/text_model/run.bat",
+		"/C/Users/Saber/Desktop/org_full_comp.sql",
+		"/C/Users/Saber/Desktop/1.sql",
+		"/D/project/winafl/afl-fuzz.c",
+		"/C/Users/Saber/Desktop/fuzzer_stats",
+		"/E/PycharmProjects/fuzz_equation/crash_type/ret/test.log",
+		"/C/Users/Saber/Desktop/自评.txt",
+		"/E/text_model/data/1218_char/model_input_char.txt",
+		"/E/text_model/1219_goods_word.txt",
+		"/E/text_model/1218_no_comp.txt",
+		"/E/text_model/rnn/need_label.txt",
+		"/C/nginx-1.13.1/html/index2.html",
+		"/E/text_model/rnn/text_input.txt",
+		"/E/text_model/rnn/text_input_comp.txt",
+		"/E/text_model/rnn/seg_news_comp.txt",
+		"/E/text_model/rnn/seg_news_label.txt",
+		"/E/text_model/rnn/vec_comp.txt",
+		"/E/text_model/rnn/label_news.txt",
+		"/E/text_model/rnn/item.txt",
+		"/E/text_model/rnn/seg_news.txt",
+		"/F/eot_downloader/eot_downloader/settings.py",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/F/eot_out/input.txt",
+		"/C/Windows/Installer/{90160000-0011-0000-1000-0000000FF1CE}/wordicon.exe",
+		"/F/eot_downloader/eot_downloader/spiders/bing_spider.py",
+		"/F/eot_out/input2.txt",
+		"/E/test2/SYZB.CSV",
+		"/E/test2/RZB.CSV",
+		"/E/test2/LSB.CSV",
+		"/E/test2/KZHB.CSV",
+		"/E/test2/KDG.CSV",
+		"/E/test2/JDB.CSV",
+		"/E/test2/GKMARC.CSV",
+		"/E/test2/GKDCB.CSV",
+		"/E/test2/GKBJSD.CSV",
+		"/E/test2/GKB.CSV",
+		"/E/test2/GJS.CSV",
+		"/E/test2/DWXXB.CSV",
+		"/E/test2/DWJDB.CSV",
+		"/E/test2/DWDGB.CSV",
+		"/E/test2/DGB.CSV",
+		"/E/test2/CHB.CSV",
+		"/E/test2/CGMARC.CSV",
+		"/E/test2/BDRZB.CSV",
+		"/E/test2/BMMARC.CSV",
+		"/D/reversingkr/0day-2017-10-19/fla9832.tmp.txt",
+		"/D/reversingkr/0day-2017-10-19/tmp.txt",
+		"/E/test2/UZDPZ.CSV",
+		"/E/test2/BDRZB.csv",
+		"/E/test2/FLK.csv",
+		"/E/test2/BMYZPZ.csv",
+		"/C/Users/Saber/Desktop/数据库最新版-带业务数据.CSV",
+		"/E/test/BMMARC.txt",
+		"/E/test/BDRZB.txt",
+		"/D/reversingkr/0day-2017-10-19/0dtest-1/Main.class.asasm",
+		"/D/reversingkr/0day-2017-10-19/0dtest-2/Call.script.asasm",
+		"/D/reversingkr/test/0dtest-2/Call.script.asasm",
+		"/D/reversingkr/0day-2017-10-19/0dtest-2/Call.class.asasm",
+		"/D/reversingkr/0day-2017-10-19/0dtest-0/Entry.class.asasm",
+		"/D/reversingkr/CVE-2015-8651/as_file/Main3.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/crash.txt",
+		"/D/reversingkr/CVE-2015-8651/as_file/tmp.txt",
+		"/D/reversingkr/CVE-2015-8651/as_file/name_table.txt",
+		"/D/reversingkr/CVE-2015-8651/as_file/Class1.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/Main2.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/Main1.as",
+		"/F/FFDec/scripts/Main.pcode",
+		"/F/data.dat",
+		"/F/content_12.txt",
+		"/F/vec5.txt",
+		"/F/keyword_12.txt",
+		"/F/content_11.txt",
+		"/F/keyword_11.txt",
+		"/F/keyword_10.txt",
+		"/F/FFDec/scripts/§_e_-----_§.pcode",
+		"/D/reversingkr/CVE-2015-8651/as_file/Main5.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/Main4.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/code.txt",
+		"/F/content_10.txt",
+		"/F/content_100.txt",
+		"/D/reversingkr/CVE-2015-8651/as_file/ByteArrayAsset3.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/ByteArrayAsset2.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/ByteArrayAsset1.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/ByteArray2.as",
+		"/D/reversingkr/CVE-2015-8651/as_file/ByteArray1.as",
+		"/F/new_vec5.txt",
+		"/D/reversingkr/CVE-2015-8651/as_file/Domain.as"
+	],
+	"find":
+	{
+		"height": 32.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"0",
+			"8096",
+			"谣言",
+			"b016620",
+			"00003",
+			"9/8/2008",
+			"00003",
+			"9/8/2008",
+			"儿科急诊",
+			"儿科",
+			"儿科急诊",
+			"2008",
+			"9/8/2008",
+			"09/08/2008",
+			"01/08/2008",
+			"2008",
+			"00003",
+			"yjl",
+			"case 67",
+			"67",
+			"switch",
+			"script6",
+			"callmethod",
+			"Main",
+			"var121",
+			"getle",
+			"getLE",
+			"get",
+			"getlex",
+			"script6",
+			"§_e_-____-_§",
+			"§_e_-_--_§",
+			"§_e_--_-_§",
+			"§_e_-_--_§",
+			"§_e_-___--_§",
+			"§_e_-____§",
+			"§_e_--___§",
+			"_e_--___",
+			"_e_---_--",
+			"§_e_-----§",
+			"_e_---_--",
+			"var_2",
+			"§_e_-_-__§",
+			"§_e_-_-_--§",
+			"§_e_--_-§",
+			"§_e_-_-_--",
+			"§_e_-----_§.§_e_-_-__-§",
+			"§_e_-_-__-§",
+			"§_e_-__---§",
+			"§_e_--__-§",
+			"§_e_-____§",
+			"§_e_----_-§",
+			"§_e_---§",
+			"var_3",
+			"§_e_---_--§",
+			"§_e_-_----§",
+			"§_e_-----_§",
+			"§&%§",
+			"§]$§",
+			"§=$§",
+			"§8\"§.§`\"§",
+			"§`\"§",
+			"Fun_3",
+			"§8#§",
+			"§>!§",
+			"§1'§",
+			"§!!§",
+			"§&!§",
+			"§@$§",
+			"§'-§",
+			"§%1§",
+			"§]0§",
+			"§ 0§",
+			"§'0§",
+			"§9§",
+			"§8&§",
+			"§;1§",
+			"§@$§",
+			"§]+§",
+			"§91§",
+			"§0+§",
+			"§2§",
+			"Class1",
+			"§,,§",
+			"§>1§",
+			"'%/>1",
+			"§-+§",
+			"§§push",
+			"§`\"§",
+			"§8\"§",
+			"§`\"§",
+			"§#'§",
+			"§9\"§",
+			"§41§",
+			"§8\"§",
+			"§@$§",
+			"§3-§",
+			"§'%§"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Fun_1",
+			"Main4",
+			"Main5",
+			"Main4",
+			"Fun_3",
+			"Fun_2",
+			"ByteArrayAsset3",
+			"Fun_1",
+			"ByteArrayAsset2",
+			"ByteArrayAsset1",
+			"Main3.decodeStrByID",
+			"decodeStrByID",
+			"var_7",
+			"var_6",
+			"var_5",
+			"var_4",
+			"var_3",
+			"var_1",
+			"var_2",
+			"var_3",
+			"Main3",
+			"Fun_5",
+			"Fun_4",
+			"Fun_3",
+			"Main2.decodeStrByID",
+			"decodeStrByID",
+			"Fun_7",
+			"Fun_6",
+			"Fun_5",
+			"Fun_4",
+			"Fun_3",
+			"Fun_2",
+			"Fun_1",
+			"var_4",
+			"var_3",
+			"var_2",
+			"var_1",
+			"Class1",
+			"Fun_4",
+			"Fun_2",
+			"Fun_1",
+			"var_6",
+			"var_5",
+			"var_4",
+			"ByteArray2",
+			"ByteArray1",
+			"Class1",
+			"Fun_err",
+			"Fun_2",
+			"Fun_3",
+			"Main2",
+			"Fun_3",
+			"var_3",
+			"var_2",
+			"var_1",
+			"Main2",
+			"Fun_1",
+			"Str_1",
+			"Main1"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": true,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1104,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"is_init_dirty_state": false,
+							"origin_encoding": "UTF-8",
+							"syntax": "Packages/LaTeX/LaTeX.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 40.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "dissertation.sublime-project",
+	"replace":
+	{
+		"height": 60.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 206.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
